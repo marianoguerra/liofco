@@ -21,12 +21,20 @@ how
 
 for now::
 
-        ./liofco.py path/to/your/code > map.html
+        ./liofco.py templatename path/to/your/code > map.html
+
+where templatename can be:
+
+* partition.html
+* treezoom.html
+* etc.
 
 example
 -------
 
-see `emesene project example <http://marianoguerra.github.com/emesene.html>`_
+see `emesene project example <http://marianoguerra.github.com/liofco/emesene.html>`_
+or `emesene project partition example <http://marianoguerra.github.com/liofco/emesene-partition.html>`_
+
 
 FAQ
 ---
