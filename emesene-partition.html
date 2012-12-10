@@ -1,0 +1,5154 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+    <link type="text/css" rel="stylesheet" href="style.css"/>
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+    <style type="text/css">
+
+.chart {
+  display: block;
+  margin: auto;
+  margin-top: 60px;
+  font-size: 11px;
+}
+
+rect {
+  stroke: #eee;
+  fill: #aaa;
+  fill-opacity: .8;
+}
+
+rect.parent {
+  cursor: pointer;
+  fill: steelblue;
+}
+
+text {
+  pointer-events: none;
+}
+
+    </style>
+  </head>
+  <body>
+    <div id="body">
+    </div>
+    <script type="text/javascript">
+
+var w = 1120,
+    h = 600,
+    x = d3.scale.linear().range([0, w]),
+    y = d3.scale.linear().range([0, h]);
+
+var vis = d3.select("#body").append("div")
+    .attr("class", "chart")
+    .style("width", w + "px")
+    .style("height", h + "px")
+  .append("svg:svg")
+    .attr("width", w)
+    .attr("height", h);
+
+var partition = d3.layout.partition()
+    .value(function(d) { return d.size; });
+
+function showJson(root) {
+  var g = vis.selectAll("g")
+      .data(partition.nodes(root))
+    .enter().append("svg:g")
+      .attr("transform", function(d) { return "translate(" + x(d.y) + "," + y(d.x) + ")"; })
+      .on("click", click);
+
+  var kx = w / root.dx,
+      ky = h / 1;
+
+  g.append("svg:rect")
+      .attr("width", root.dy * kx)
+      .attr("height", function(d) { return d.dx * ky; })
+      .attr("class", function(d) { return d.children ? "parent" : "child"; });
+
+  g.append("svg:text")
+      .attr("transform", transform)
+      .attr("dy", ".35em")
+      .style("opacity", function(d) { return d.dx * ky > 12 ? 1 : 0; })
+      .text(function(d) { return d.name + ((d.size === undefined) ? "" : " (" + d.size + ")"); })
+
+  d3.select(window)
+      .on("click", function() { click(root); })
+
+  function click(d) {
+    if (!d.children) return;
+
+    kx = (d.y ? w - 40 : w) / (1 - d.y);
+    ky = h / d.dx;
+    x.domain([d.y, 1]).range([d.y ? 40 : 0, w]);
+    y.domain([d.x, d.x + d.dx]);
+
+    var t = g.transition()
+        .duration(d3.event.altKey ? 7500 : 750)
+        .attr("transform", function(d) { return "translate(" + x(d.y) + "," + y(d.x) + ")"; });
+
+    t.select("rect")
+        .attr("width", d.dy * kx)
+        .attr("height", function(d) { return d.dx * ky; });
+
+    t.select("text")
+        .attr("transform", transform)
+        .style("opacity", function(d) { return d.dx * ky > 12 ? 1 : 0; });
+
+    d3.event.stopPropagation();
+  }
+
+  function transform(d) {
+    return "translate(8," + d.dx * ky / 2 + ")";
+  }
+};
+
+showJson({
+  "name": "root", 
+  "children": [
+    {
+      "name": ".", 
+      "children": [
+        {
+          "name": "plugin_base.py", 
+          "size": 59
+        }, 
+        {
+          "name": "plugins", 
+          "children": []
+        }, 
+        {
+          "name": "emesene.py", 
+          "size": 846
+        }, 
+        {
+          "name": "Language.py", 
+          "size": 194
+        }, 
+        {
+          "name": "data", 
+          "children": [
+            {
+              "name": "pixmaps", 
+              "children": []
+            }, 
+            {
+              "name": "share", 
+              "children": [
+                {
+                  "name": "applications", 
+                  "children": []
+                }
+              ]
+            }, 
+            {
+              "name": "icons", 
+              "children": [
+                {
+                  "name": "hicolor", 
+                  "children": [
+                    {
+                      "name": "48x48", 
+                      "children": [
+                        {
+                          "name": "apps", 
+                          "children": []
+                        }
+                      ]
+                    }, 
+                    {
+                      "name": "72x72", 
+                      "children": [
+                        {
+                          "name": "apps", 
+                          "children": []
+                        }
+                      ]
+                    }, 
+                    {
+                      "name": "24x24", 
+                      "children": [
+                        {
+                          "name": "apps", 
+                          "children": []
+                        }
+                      ]
+                    }, 
+                    {
+                      "name": "36x36", 
+                      "children": [
+                        {
+                          "name": "apps", 
+                          "children": []
+                        }
+                      ]
+                    }, 
+                    {
+                      "name": "256x256", 
+                      "children": [
+                        {
+                          "name": "apps", 
+                          "children": []
+                        }
+                      ]
+                    }, 
+                    {
+                      "name": "scalable", 
+                      "children": [
+                        {
+                          "name": "apps", 
+                          "children": []
+                        }
+                      ]
+                    }, 
+                    {
+                      "name": "16x16", 
+                      "children": [
+                        {
+                          "name": "apps", 
+                          "children": []
+                        }
+                      ]
+                    }, 
+                    {
+                      "name": "96x96", 
+                      "children": [
+                        {
+                          "name": "apps", 
+                          "children": []
+                        }
+                      ]
+                    }, 
+                    {
+                      "name": "192x192", 
+                      "children": [
+                        {
+                          "name": "apps", 
+                          "children": []
+                        }
+                      ]
+                    }, 
+                    {
+                      "name": "64x64", 
+                      "children": [
+                        {
+                          "name": "apps", 
+                          "children": []
+                        }
+                      ]
+                    }, 
+                    {
+                      "name": "128x128", 
+                      "children": [
+                        {
+                          "name": "apps", 
+                          "children": []
+                        }
+                      ]
+                    }, 
+                    {
+                      "name": "22x22", 
+                      "children": [
+                        {
+                          "name": "apps", 
+                          "children": []
+                        }
+                      ]
+                    }, 
+                    {
+                      "name": "32x32", 
+                      "children": [
+                        {
+                          "name": "apps", 
+                          "children": []
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }, 
+        {
+          "name": "gui", 
+          "children": [
+            {
+              "name": "urwidui", 
+              "children": [
+                {
+                  "name": "__init__.py", 
+                  "size": 46
+                }
+              ]
+            }, 
+            {
+              "name": "__init__.py", 
+              "size": 21
+            }, 
+            {
+              "name": "gtkui", 
+              "children": [
+                {
+                  "name": "Header.py", 
+                  "size": 110
+                }, 
+                {
+                  "name": "TinyButton.py", 
+                  "size": 56
+                }, 
+                {
+                  "name": "ContactInformation.py", 
+                  "size": 582
+                }, 
+                {
+                  "name": "Login.py", 
+                  "size": 781
+                }, 
+                {
+                  "name": "ContactList.py", 
+                  "size": 938
+                }, 
+                {
+                  "name": "GroupMenu.py", 
+                  "size": 107
+                }, 
+                {
+                  "name": "IconView.py", 
+                  "size": 205
+                }, 
+                {
+                  "name": "Preferences.py", 
+                  "size": 1706
+                }, 
+                {
+                  "name": "ExtensionList.py", 
+                  "size": 697
+                }, 
+                {
+                  "name": "FileTransferWidget.py", 
+                  "size": 360
+                }, 
+                {
+                  "name": "AvatarChooser.py", 
+                  "size": 307
+                }, 
+                {
+                  "name": "stock.py", 
+                  "size": 71
+                }, 
+                {
+                  "name": "Window.py", 
+                  "size": 300
+                }, 
+                {
+                  "name": "ContactInfoRotate.py", 
+                  "size": 209
+                }, 
+                {
+                  "name": "AdiumTextBox.py", 
+                  "size": 223
+                }, 
+                {
+                  "name": "Conversation.py", 
+                  "size": 494
+                }, 
+                {
+                  "name": "enchant_dicts.py", 
+                  "size": 178
+                }, 
+                {
+                  "name": "TextField.py", 
+                  "size": 152
+                }, 
+                {
+                  "name": "PictureHandler.py", 
+                  "size": 71
+                }, 
+                {
+                  "name": "ImageAreaSelector.py", 
+                  "size": 420
+                }, 
+                {
+                  "name": "TinyButtonNew.py", 
+                  "size": 47
+                }, 
+                {
+                  "name": "SearchEntry.py", 
+                  "size": 50
+                }, 
+                {
+                  "name": "PluginWindow.py", 
+                  "size": 108
+                }, 
+                {
+                  "name": "MainMenu.py", 
+                  "size": 361
+                }, 
+                {
+                  "name": "ConversationManager.py", 
+                  "size": 282
+                }, 
+                {
+                  "name": "RichWidget.py", 
+                  "size": 105
+                }, 
+                {
+                  "name": "SyncTool.py", 
+                  "size": 105
+                }, 
+                {
+                  "name": "ContactMenu.py", 
+                  "size": 228
+                }, 
+                {
+                  "name": "CallWidget.py", 
+                  "size": 117
+                }, 
+                {
+                  "name": "FileTransferBarWidget.py", 
+                  "size": 152
+                }, 
+                {
+                  "name": "EmptyWidget.py", 
+                  "size": 30
+                }, 
+                {
+                  "name": "RichBuffer.py", 
+                  "size": 240
+                }, 
+                {
+                  "name": "StatusMenu.py", 
+                  "size": 60
+                }, 
+                {
+                  "name": "ContactInfoList.py", 
+                  "size": 207
+                }, 
+                {
+                  "name": "Dialog.py", 
+                  "size": 1943
+                }, 
+                {
+                  "name": "Tooltips.py", 
+                  "size": 204
+                }, 
+                {
+                  "name": "utils.py", 
+                  "size": 300
+                }, 
+                {
+                  "name": "AvatarManager.py", 
+                  "size": 171
+                }, 
+                {
+                  "name": "ImageAreaSelectorNew.py", 
+                  "size": 394
+                }, 
+                {
+                  "name": "StatusButton.py", 
+                  "size": 84
+                }, 
+                {
+                  "name": "NiceBar.py", 
+                  "size": 113
+                }, 
+                {
+                  "name": "TabWidget.py", 
+                  "size": 113
+                }, 
+                {
+                  "name": "UserPanel.py", 
+                  "size": 276
+                }, 
+                {
+                  "name": "MainWindow.py", 
+                  "size": 306
+                }, 
+                {
+                  "name": "InfoBar.py", 
+                  "size": 97
+                }, 
+                {
+                  "name": "__init__.py", 
+                  "size": 211
+                }, 
+                {
+                  "name": "Avatar.py", 
+                  "size": 245
+                }, 
+                {
+                  "name": "RenderersNew.py", 
+                  "size": 461
+                }, 
+                {
+                  "name": "TextBox.py", 
+                  "size": 448
+                }, 
+                {
+                  "name": "DebugWindow.py", 
+                  "size": 200
+                }, 
+                {
+                  "name": "Renderers.py", 
+                  "size": 763
+                }, 
+                {
+                  "name": "AccountMenu.py", 
+                  "size": 45
+                }, 
+                {
+                  "name": "ConversationToolbar.py", 
+                  "size": 256
+                }
+              ]
+            }, 
+            {
+              "name": "qt4ui", 
+              "children": [
+                {
+                  "name": "Preferences.py", 
+                  "size": 725
+                }, 
+                {
+                  "name": "Conversation.py", 
+                  "size": 382
+                }, 
+                {
+                  "name": "pages", 
+                  "children": [
+                    {
+                      "name": "ConversationPage.py", 
+                      "size": 152
+                    }, 
+                    {
+                      "name": "MainPage.py", 
+                      "size": 208
+                    }, 
+                    {
+                      "name": "LoginPage.py", 
+                      "size": 485
+                    }, 
+                    {
+                      "name": "__init__.py", 
+                      "size": 11
+                    }, 
+                    {
+                      "name": "ConnectingPage.py", 
+                      "size": 130
+                    }
+                  ]
+                }, 
+                {
+                  "name": "PictureHandler.py", 
+                  "size": 76
+                }, 
+                {
+                  "name": "__init__.py", 
+                  "size": 150
+                }, 
+                {
+                  "name": "AvatarChooser.py", 
+                  "size": 290
+                }, 
+                {
+                  "name": "Dialog.py", 
+                  "size": 1007
+                }, 
+                {
+                  "name": "menus", 
+                  "children": [
+                    {
+                      "name": "ContactMenu.py", 
+                      "size": 192
+                    }, 
+                    {
+                      "name": "ProfileMenu.py", 
+                      "size": 38
+                    }, 
+                    {
+                      "name": "__init__.py", 
+                      "size": 21
+                    }, 
+                    {
+                      "name": "TrayMenus.py", 
+                      "size": 225
+                    }, 
+                    {
+                      "name": "StatusMenu.py", 
+                      "size": 42
+                    }, 
+                    {
+                      "name": "GroupMenu.py", 
+                      "size": 110
+                    }, 
+                    {
+                      "name": "MainMenu.py", 
+                      "size": 219
+                    }
+                  ]
+                }, 
+                {
+                  "name": "Notifier.py", 
+                  "size": 58
+                }, 
+                {
+                  "name": "DebugWindow.py", 
+                  "size": 182
+                }, 
+                {
+                  "name": "widgets", 
+                  "children": [
+                    {
+                      "name": "UserInfoPanel.py", 
+                      "size": 115
+                    }, 
+                    {
+                      "name": "StatusButton.py", 
+                      "size": 86
+                    }, 
+                    {
+                      "name": "SmileyPopupChooser.py", 
+                      "size": 175
+                    }, 
+                    {
+                      "name": "ContactInfoRotate.py", 
+                      "size": 154
+                    }, 
+                    {
+                      "name": "AdiumChatOutput.py", 
+                      "size": 114
+                    }, 
+                    {
+                      "name": "StatusCombo.py", 
+                      "size": 86
+                    }, 
+                    {
+                      "name": "NickEdit.py", 
+                      "size": 152
+                    }, 
+                    {
+                      "name": "UserPanel.py", 
+                      "size": 244
+                    }, 
+                    {
+                      "name": "ContactListProxy.py", 
+                      "size": 201
+                    }, 
+                    {
+                      "name": "IconViewDelegate.py", 
+                      "size": 65
+                    }, 
+                    {
+                      "name": "EmptyWidget.py", 
+                      "size": 31
+                    }, 
+                    {
+                      "name": "ContactListModel.py", 
+                      "size": 315
+                    }, 
+                    {
+                      "name": "__init__.py", 
+                      "size": 22
+                    }, 
+                    {
+                      "name": "ContactList.py", 
+                      "size": 211
+                    }, 
+                    {
+                      "name": "ChatInput.py", 
+                      "size": 323
+                    }, 
+                    {
+                      "name": "ImageAreaSelector.py", 
+                      "size": 285
+                    }, 
+                    {
+                      "name": "DisplayPic.py", 
+                      "size": 269
+                    }, 
+                    {
+                      "name": "SearchEntry.py", 
+                      "size": 121
+                    }, 
+                    {
+                      "name": "ContactListDelegate.py", 
+                      "size": 214
+                    }, 
+                    {
+                      "name": "ChatOutput.py", 
+                      "size": 94
+                    }, 
+                    {
+                      "name": "ConversationToolbar.py", 
+                      "size": 216
+                    }
+                  ]
+                }, 
+                {
+                  "name": "TrayIcon.py", 
+                  "size": 143
+                }, 
+                {
+                  "name": "Utils.py", 
+                  "size": 250
+                }, 
+                {
+                  "name": "TopLevelWindow.py", 
+                  "size": 244
+                }
+              ]
+            }, 
+            {
+              "name": "headless", 
+              "children": [
+                {
+                  "name": "__init__.py", 
+                  "size": 84
+                }
+              ]
+            }, 
+            {
+              "name": "base", 
+              "children": [
+                {
+                  "name": "Desktop.py", 
+                  "size": 318
+                }, 
+                {
+                  "name": "ContactInformation.py", 
+                  "size": 92
+                }, 
+                {
+                  "name": "PictureHandler.py", 
+                  "size": 67
+                }, 
+                {
+                  "name": "ContactList.py", 
+                  "size": 647
+                }, 
+                {
+                  "name": "AvatarManager.py", 
+                  "size": 161
+                }, 
+                {
+                  "name": "ImageTheme.py", 
+                  "size": 174
+                }, 
+                {
+                  "name": "Handler.py", 
+                  "size": 658
+                }, 
+                {
+                  "name": "Theme.py", 
+                  "size": 133
+                }, 
+                {
+                  "name": "Conversation.py", 
+                  "size": 766
+                }, 
+                {
+                  "name": "LoginBase.py", 
+                  "size": 254
+                }, 
+                {
+                  "name": "AdiumEmoteThemes.py", 
+                  "size": 60
+                }, 
+                {
+                  "name": "parsers.py", 
+                  "size": 81
+                }, 
+                {
+                  "name": "MainWindowBase.py", 
+                  "size": 124
+                }, 
+                {
+                  "name": "ConversationManager.py", 
+                  "size": 346
+                }, 
+                {
+                  "name": "Plus.py", 
+                  "size": 501
+                }, 
+                {
+                  "name": "Message.py", 
+                  "size": 80
+                }, 
+                {
+                  "name": "stock.py", 
+                  "size": 57
+                }, 
+                {
+                  "name": "ConversationStatus.py", 
+                  "size": 84
+                }, 
+                {
+                  "name": "AdiumThemes.py", 
+                  "size": 92
+                }, 
+                {
+                  "name": "MarkupParser.py", 
+                  "size": 269
+                }, 
+                {
+                  "name": "AdiumEmoteTheme.py", 
+                  "size": 126
+                }, 
+                {
+                  "name": "SoundThemes.py", 
+                  "size": 59
+                }, 
+                {
+                  "name": "ImagesThemes.py", 
+                  "size": 73
+                }, 
+                {
+                  "name": "BaseTray.py", 
+                  "size": 106
+                }, 
+                {
+                  "name": "SoundTheme.py", 
+                  "size": 67
+                }, 
+                {
+                  "name": "__init__.py", 
+                  "size": 39
+                }, 
+                {
+                  "name": "ThemesManager.py", 
+                  "size": 108
+                }, 
+                {
+                  "name": "AdiumTheme.py", 
+                  "size": 390
+                }, 
+                {
+                  "name": "OutputText.py", 
+                  "size": 80
+                }
+              ]
+            }, 
+            {
+              "name": "common", 
+              "children": [
+                {
+                  "name": "Indicator.py", 
+                  "size": 140
+                }, 
+                {
+                  "name": "GNTPNotification.py", 
+                  "size": 57
+                }, 
+                {
+                  "name": "__init__.py", 
+                  "size": 51
+                }, 
+                {
+                  "name": "ThemeNotificationImage.py", 
+                  "size": 43
+                }, 
+                {
+                  "name": "NoTrayIcon.py", 
+                  "size": 41
+                }, 
+                {
+                  "name": "PyNotification.py", 
+                  "size": 63
+                }, 
+                {
+                  "name": "GrowlNotification.py", 
+                  "size": 43
+                }, 
+                {
+                  "name": "DummyNotificationImage.py", 
+                  "size": 26
+                }, 
+                {
+                  "name": "MessagingMenu.py", 
+                  "size": 193
+                }, 
+                {
+                  "name": "GtkNotification.py", 
+                  "size": 327
+                }, 
+                {
+                  "name": "MessagingMenuNew.py", 
+                  "size": 136
+                }, 
+                {
+                  "name": "TrayIcon.py", 
+                  "size": 429
+                }, 
+                {
+                  "name": "UnityLauncher.py", 
+                  "size": 131
+                }
+              ]
+            }
+          ]
+        }, 
+        {
+          "name": "WeakMethod.py", 
+          "size": 62
+        }, 
+        {
+          "name": "__init__.py", 
+          "size": 19
+        }, 
+        {
+          "name": "extension.py", 
+          "size": 688
+        }, 
+        {
+          "name": "themes", 
+          "children": [
+            {
+              "name": "images", 
+              "children": [
+                {
+                  "name": "default", 
+                  "children": [
+                    {
+                      "name": "panel", 
+                      "children": []
+                    }
+                  ]
+                }
+              ]
+            }, 
+            {
+              "name": "conversations", 
+              "children": [
+                {
+                  "name": "renkoo.AdiumMessageStyle", 
+                  "children": [
+                    {
+                      "name": "Contents", 
+                      "children": [
+                        {
+                          "name": "Resources", 
+                          "children": [
+                            {
+                              "name": "images", 
+                              "children": []
+                            }, 
+                            {
+                              "name": "Styles", 
+                              "children": []
+                            }, 
+                            {
+                              "name": "Outgoing", 
+                              "children": []
+                            }, 
+                            {
+                              "name": "Incoming", 
+                              "children": []
+                            }, 
+                            {
+                              "name": "Variants", 
+                              "children": []
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }, 
+                {
+                  "name": "Ravenant.AdiumMessageStyle", 
+                  "children": [
+                    {
+                      "name": "Contents", 
+                      "children": [
+                        {
+                          "name": "Resources", 
+                          "children": [
+                            {
+                              "name": "Outgoing", 
+                              "children": []
+                            }, 
+                            {
+                              "name": "javascripts", 
+                              "children": [
+                                {
+                                  "name": "scroll.js", 
+                                  "size": 28
+                                }, 
+                                {
+                                  "name": "reflection.js", 
+                                  "size": 170
+                                }
+                              ]
+                            }, 
+                            {
+                              "name": "Incoming", 
+                              "children": []
+                            }, 
+                            {
+                              "name": "Variants", 
+                              "children": []
+                            }, 
+                            {
+                              "name": "img", 
+                              "children": []
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }, 
+            {
+              "name": "sounds", 
+              "children": [
+                {
+                  "name": "default.AdiumSoundset", 
+                  "children": []
+                }
+              ]
+            }, 
+            {
+              "name": "emotes", 
+              "children": [
+                {
+                  "name": "default.AdiumEmoticonset", 
+                  "children": []
+                }
+              ]
+            }
+          ]
+        }, 
+        {
+          "name": "debugger.py", 
+          "size": 87
+        }, 
+        {
+          "name": "ueb.py", 
+          "size": 65
+        }, 
+        {
+          "name": "optionprovider.py", 
+          "size": 120
+        }, 
+        {
+          "name": "interfaces", 
+          "children": [
+            {
+              "name": "standard.py", 
+              "size": 3
+            }, 
+            {
+              "name": "external.py", 
+              "size": 13
+            }, 
+            {
+              "name": "__init__.py", 
+              "size": 2
+            }
+          ]
+        }, 
+        {
+          "name": "test", 
+          "children": [
+            {
+              "name": "testutils.py", 
+              "size": 35
+            }, 
+            {
+              "name": "test_avatar_cache.py", 
+              "size": 51
+            }, 
+            {
+              "name": "test_logger.py", 
+              "size": 295
+            }, 
+            {
+              "name": "__main__.py", 
+              "size": 12
+            }, 
+            {
+              "name": "test_cache_manager.py", 
+              "size": 32
+            }, 
+            {
+              "name": "test_ring_buffer.py", 
+              "size": 75
+            }, 
+            {
+              "name": "test_emoticon_cache.py", 
+              "size": 45
+            }, 
+            {
+              "name": "e3_example.py", 
+              "size": 114
+            }
+          ]
+        }, 
+        {
+          "name": "SingleInstance.py", 
+          "size": 139
+        }, 
+        {
+          "name": "pygicompat.py", 
+          "size": 203
+        }, 
+        {
+          "name": "Info.py", 
+          "size": 39
+        }, 
+        {
+          "name": "po", 
+          "children": [
+            {
+              "name": "el", 
+              "children": [
+                {
+                  "name": "LC_MESSAGES", 
+                  "children": []
+                }
+              ]
+            }, 
+            {
+              "name": "eo", 
+              "children": [
+                {
+                  "name": "LC_MESSAGES", 
+                  "children": []
+                }
+              ]
+            }, 
+            {
+              "name": "gv", 
+              "children": [
+                {
+                  "name": "LC_MESSAGES", 
+                  "children": []
+                }
+              ]
+            }, 
+            {
+              "name": "zh_HK", 
+              "children": [
+                {
+                  "name": "LC_MESSAGES", 
+                  "children": []
+                }
+              ]
+            }, 
+            {
+              "name": "oc", 
+              "children": [
+                {
+                  "name": "LC_MESSAGES", 
+                  "children": []
+                }
+              ]
+            }, 
+            {
+              "name": "is", 
+              "children": [
+                {
+                  "name": "LC_MESSAGES", 
+                  "children": []
+                }
+              ]
+            }, 
+            {
+              "name": "th", 
+              "children": [
+                {
+                  "name": "LC_MESSAGES", 
+                  "children": []
+                }
+              ]
+            }, 
+            {
+              "name": "it", 
+              "children": [
+                {
+                  "name": "LC_MESSAGES", 
+                  "children": []
+                }
+              ]
+            }, 
+            {
+              "name": "kn", 
+              "children": [
+                {
+                  "name": "LC_MESSAGES", 
+                  "children": []
+                }
+              ]
+            }, 
+            {
+              "name": "ia", 
+              "children": [
+                {
+                  "name": "LC_MESSAGES", 
+                  "children": []
+                }
+              ]
+            }, 
+            {
+              "name": "ar", 
+              "children": [
+                {
+                  "name": "LC_MESSAGES", 
+                  "children": []
+                }
+              ]
+            }, 
+            {
+              "name": "ga", 
+              "children": [
+                {
+                  "name": "LC_MESSAGES", 
+                  "children": []
+                }
+              ]
+            }, 
+            {
+              "name": "kab", 
+              "children": [
+                {
+                  "name": "LC_MESSAGES", 
+                  "children": []
+                }
+              ]
+            }, 
+            {
+              "name": "cs", 
+              "children": [
+                {
+                  "name": "LC_MESSAGES", 
+                  "children": []
+                }
+              ]
+            }, 
+            {
+              "name": "et", 
+              "children": [
+                {
+                  "name": "LC_MESSAGES", 
+                  "children": []
+                }
+              ]
+            }, 
+            {
+              "name": "az", 
+              "children": [
+                {
+                  "name": "LC_MESSAGES", 
+                  "children": []
+                }
+              ]
+            }, 
+            {
+              "name": "id", 
+              "children": [
+                {
+                  "name": "LC_MESSAGES", 
+                  "children": []
+                }
+              ]
+            }, 
+            {
+              "name": "es", 
+              "children": [
+                {
+                  "name": "LC_MESSAGES", 
+                  "children": []
+                }
+              ]
+            }, 
+            {
+              "name": "lld", 
+              "children": [
+                {
+                  "name": "LC_MESSAGES", 
+                  "children": []
+                }
+              ]
+            }, 
+            {
+              "name": "ru", 
+              "children": [
+                {
+                  "name": "LC_MESSAGES", 
+                  "children": []
+                }
+              ]
+            }, 
+            {
+              "name": "gl", 
+              "children": [
+                {
+                  "name": "LC_MESSAGES", 
+                  "children": []
+                }
+              ]
+            }, 
+            {
+              "name": "lb", 
+              "children": [
+                {
+                  "name": "LC_MESSAGES", 
+                  "children": []
+                }
+              ]
+            }, 
+            {
+              "name": "mus", 
+              "children": [
+                {
+                  "name": "LC_MESSAGES", 
+                  "children": []
+                }
+              ]
+            }, 
+            {
+              "name": "la", 
+              "children": [
+                {
+                  "name": "LC_MESSAGES", 
+                  "children": []
+                }
+              ]
+            }, 
+            {
+              "name": "nb", 
+              "children": [
+                {
+                  "name": "LC_MESSAGES", 
+                  "children": []
+                }
+              ]
+            }, 
+            {
+              "name": "af", 
+              "children": [
+                {
+                  "name": "LC_MESSAGES", 
+                  "children": []
+                }
+              ]
+            }, 
+            {
+              "name": "tr", 
+              "children": [
+                {
+                  "name": "LC_MESSAGES", 
+                  "children": []
+                }
+              ]
+            }, 
+            {
+              "name": "en_AU", 
+              "children": [
+                {
+                  "name": "LC_MESSAGES", 
+                  "children": []
+                }
+              ]
+            }, 
+            {
+              "name": "lv", 
+              "children": [
+                {
+                  "name": "LC_MESSAGES", 
+                  "children": []
+                }
+              ]
+            }, 
+            {
+              "name": "lt", 
+              "children": [
+                {
+                  "name": "LC_MESSAGES", 
+                  "children": []
+                }
+              ]
+            }, 
+            {
+              "name": "frp", 
+              "children": [
+                {
+                  "name": "LC_MESSAGES", 
+                  "children": []
+                }
+              ]
+            }, 
+            {
+              "name": "vec", 
+              "children": [
+                {
+                  "name": "LC_MESSAGES", 
+                  "children": []
+                }
+              ]
+            }, 
+            {
+              "name": "fo", 
+              "children": [
+                {
+                  "name": "LC_MESSAGES", 
+                  "children": []
+                }
+              ]
+            }, 
+            {
+              "name": "nn", 
+              "children": [
+                {
+                  "name": "LC_MESSAGES", 
+                  "children": []
+                }
+              ]
+            }, 
+            {
+              "name": "ro", 
+              "children": [
+                {
+                  "name": "LC_MESSAGES", 
+                  "children": []
+                }
+              ]
+            }, 
+            {
+              "name": "ca", 
+              "children": [
+                {
+                  "name": "LC_MESSAGES", 
+                  "children": []
+                }
+              ]
+            }, 
+            {
+              "name": "fil", 
+              "children": [
+                {
+                  "name": "LC_MESSAGES", 
+                  "children": []
+                }
+              ]
+            }, 
+            {
+              "name": "ta", 
+              "children": [
+                {
+                  "name": "LC_MESSAGES", 
+                  "children": []
+                }
+              ]
+            }, 
+            {
+              "name": "fi", 
+              "children": [
+                {
+                  "name": "LC_MESSAGES", 
+                  "children": []
+                }
+              ]
+            }, 
+            {
+              "name": "en_CA", 
+              "children": [
+                {
+                  "name": "LC_MESSAGES", 
+                  "children": []
+                }
+              ]
+            }, 
+            {
+              "name": "fr", 
+              "children": [
+                {
+                  "name": "LC_MESSAGES", 
+                  "children": []
+                }
+              ]
+            }, 
+            {
+              "name": "bg", 
+              "children": [
+                {
+                  "name": "LC_MESSAGES", 
+                  "children": []
+                }
+              ]
+            }, 
+            {
+              "name": "uk", 
+              "children": [
+                {
+                  "name": "LC_MESSAGES", 
+                  "children": []
+                }
+              ]
+            }, 
+            {
+              "name": "pt_BR", 
+              "children": [
+                {
+                  "name": "LC_MESSAGES", 
+                  "children": []
+                }
+              ]
+            }, 
+            {
+              "name": "ast", 
+              "children": [
+                {
+                  "name": "LC_MESSAGES", 
+                  "children": []
+                }
+              ]
+            }, 
+            {
+              "name": "hr", 
+              "children": [
+                {
+                  "name": "LC_MESSAGES", 
+                  "children": []
+                }
+              ]
+            }, 
+            {
+              "name": "bn", 
+              "children": [
+                {
+                  "name": "LC_MESSAGES", 
+                  "children": []
+                }
+              ]
+            }, 
+            {
+              "name": "zh_TW", 
+              "children": [
+                {
+                  "name": "LC_MESSAGES", 
+                  "children": []
+                }
+              ]
+            }, 
+            {
+              "name": "hu", 
+              "children": [
+                {
+                  "name": "LC_MESSAGES", 
+                  "children": []
+                }
+              ]
+            }, 
+            {
+              "name": "bs", 
+              "children": [
+                {
+                  "name": "LC_MESSAGES", 
+                  "children": []
+                }
+              ]
+            }, 
+            {
+              "name": "dv", 
+              "children": [
+                {
+                  "name": "LC_MESSAGES", 
+                  "children": []
+                }
+              ]
+            }, 
+            {
+              "name": "nl", 
+              "children": [
+                {
+                  "name": "LC_MESSAGES", 
+                  "children": []
+                }
+              ]
+            }, 
+            {
+              "name": "da", 
+              "children": [
+                {
+                  "name": "LC_MESSAGES", 
+                  "children": []
+                }
+              ]
+            }, 
+            {
+              "name": "ja", 
+              "children": [
+                {
+                  "name": "LC_MESSAGES", 
+                  "children": []
+                }
+              ]
+            }, 
+            {
+              "name": "he", 
+              "children": [
+                {
+                  "name": "LC_MESSAGES", 
+                  "children": []
+                }
+              ]
+            }, 
+            {
+              "name": "fur", 
+              "children": [
+                {
+                  "name": "LC_MESSAGES", 
+                  "children": []
+                }
+              ]
+            }, 
+            {
+              "name": "pt", 
+              "children": [
+                {
+                  "name": "LC_MESSAGES", 
+                  "children": []
+                }
+              ]
+            }, 
+            {
+              "name": "zh_CN", 
+              "children": [
+                {
+                  "name": "LC_MESSAGES", 
+                  "children": []
+                }
+              ]
+            }, 
+            {
+              "name": "sr", 
+              "children": [
+                {
+                  "name": "LC_MESSAGES", 
+                  "children": []
+                }
+              ]
+            }, 
+            {
+              "name": "sq", 
+              "children": [
+                {
+                  "name": "LC_MESSAGES", 
+                  "children": []
+                }
+              ]
+            }, 
+            {
+              "name": "nan", 
+              "children": [
+                {
+                  "name": "LC_MESSAGES", 
+                  "children": []
+                }
+              ]
+            }, 
+            {
+              "name": "ko", 
+              "children": [
+                {
+                  "name": "LC_MESSAGES", 
+                  "children": []
+                }
+              ]
+            }, 
+            {
+              "name": "sv", 
+              "children": [
+                {
+                  "name": "LC_MESSAGES", 
+                  "children": []
+                }
+              ]
+            }, 
+            {
+              "name": "mk", 
+              "children": [
+                {
+                  "name": "LC_MESSAGES", 
+                  "children": []
+                }
+              ]
+            }, 
+            {
+              "name": "sk", 
+              "children": [
+                {
+                  "name": "LC_MESSAGES", 
+                  "children": []
+                }
+              ]
+            }, 
+            {
+              "name": "de", 
+              "children": [
+                {
+                  "name": "LC_MESSAGES", 
+                  "children": []
+                }
+              ]
+            }, 
+            {
+              "name": "pl", 
+              "children": [
+                {
+                  "name": "LC_MESSAGES", 
+                  "children": []
+                }
+              ]
+            }, 
+            {
+              "name": "en_GB", 
+              "children": [
+                {
+                  "name": "LC_MESSAGES", 
+                  "children": []
+                }
+              ]
+            }, 
+            {
+              "name": "ms", 
+              "children": [
+                {
+                  "name": "LC_MESSAGES", 
+                  "children": []
+                }
+              ]
+            }, 
+            {
+              "name": "sl", 
+              "children": [
+                {
+                  "name": "LC_MESSAGES", 
+                  "children": []
+                }
+              ]
+            }, 
+            {
+              "name": "ku", 
+              "children": [
+                {
+                  "name": "LC_MESSAGES", 
+                  "children": []
+                }
+              ]
+            }, 
+            {
+              "name": "nds", 
+              "children": [
+                {
+                  "name": "LC_MESSAGES", 
+                  "children": []
+                }
+              ]
+            }, 
+            {
+              "name": "eu", 
+              "children": [
+                {
+                  "name": "LC_MESSAGES", 
+                  "children": []
+                }
+              ]
+            }
+          ]
+        }, 
+        {
+          "name": "NotificationObject.py", 
+          "size": 93
+        }, 
+        {
+          "name": "e3", 
+          "children": [
+            {
+              "name": "dummy", 
+              "children": [
+                {
+                  "name": "Worker.py", 
+                  "size": 322
+                }, 
+                {
+                  "name": "Session.py", 
+                  "size": 65
+                }, 
+                {
+                  "name": "__init__.py", 
+                  "size": 2
+                }
+              ]
+            }, 
+            {
+              "name": "xmpp", 
+              "children": [
+                {
+                  "name": "Session.py", 
+                  "size": 189
+                }, 
+                {
+                  "name": "facebook.py", 
+                  "size": 195
+                }, 
+                {
+                  "name": "__init__.py", 
+                  "size": 2
+                }, 
+                {
+                  "name": "MailClients.py", 
+                  "size": 195
+                }, 
+                {
+                  "name": "pyfb", 
+                  "children": [
+                    {
+                      "name": "pyfb", 
+                      "children": [
+                        {
+                          "name": "client.py", 
+                          "size": 262
+                        }, 
+                        {
+                          "name": "utils.py", 
+                          "size": 103
+                        }, 
+                        {
+                          "name": "__init__.py", 
+                          "size": 20
+                        }, 
+                        {
+                          "name": "auth.py", 
+                          "size": 94
+                        }, 
+                        {
+                          "name": "pyfb.py", 
+                          "size": 157
+                        }
+                      ]
+                    }, 
+                    {
+                      "name": "setup.py", 
+                      "size": 20
+                    }, 
+                    {
+                      "name": "__init__.py", 
+                      "size": 1
+                    }
+                  ]
+                }, 
+                {
+                  "name": "Worker.py", 
+                  "size": 467
+                }, 
+                {
+                  "name": "SleekXMPP", 
+                  "children": [
+                    {
+                      "name": "tests", 
+                      "children": [
+                        {
+                          "name": "test_stanza_error.py", 
+                          "size": 81
+                        }, 
+                        {
+                          "name": "test_stanza_xep_0004.py", 
+                          "size": 198
+                        }, 
+                        {
+                          "name": "test_stanza_message.py", 
+                          "size": 57
+                        }, 
+                        {
+                          "name": "test_plugins.py", 
+                          "size": 162
+                        }, 
+                        {
+                          "name": "test_stanza_roster.py", 
+                          "size": 88
+                        }, 
+                        {
+                          "name": "test_stanza_gmail.py", 
+                          "size": 88
+                        }, 
+                        {
+                          "name": "test_stream_xep_0030.py", 
+                          "size": 576
+                        }, 
+                        {
+                          "name": "test_stream_xep_0059.py", 
+                          "size": 162
+                        }, 
+                        {
+                          "name": "test_stream_handlers.py", 
+                          "size": 201
+                        }, 
+                        {
+                          "name": "test_stream_roster.py", 
+                          "size": 360
+                        }, 
+                        {
+                          "name": "test_stream_exceptions.py", 
+                          "size": 274
+                        }, 
+                        {
+                          "name": "test_events.py", 
+                          "size": 95
+                        }, 
+                        {
+                          "name": "test_stream.py", 
+                          "size": 79
+                        }, 
+                        {
+                          "name": "test_stanza_xep_0047.py", 
+                          "size": 90
+                        }, 
+                        {
+                          "name": "test_stanza_presence.py", 
+                          "size": 67
+                        }, 
+                        {
+                          "name": "test_stanza_xep_0184.py", 
+                          "size": 38
+                        }, 
+                        {
+                          "name": "test_stream_xep_0050.py", 
+                          "size": 780
+                        }, 
+                        {
+                          "name": "test_stream_xep_0060.py", 
+                          "size": 794
+                        }, 
+                        {
+                          "name": "test_stanza_xep_0030.py", 
+                          "size": 516
+                        }, 
+                        {
+                          "name": "live_test.py", 
+                          "size": 100
+                        }, 
+                        {
+                          "name": "test_stanza_element.py", 
+                          "size": 1251
+                        }, 
+                        {
+                          "name": "test_stream_xep_0092.py", 
+                          "size": 69
+                        }, 
+                        {
+                          "name": "test_stanza_xep_0085.py", 
+                          "size": 45
+                        }, 
+                        {
+                          "name": "test_stanza_iq.py", 
+                          "size": 90
+                        }, 
+                        {
+                          "name": "live_multiple_streams.py", 
+                          "size": 57
+                        }, 
+                        {
+                          "name": "test_stream_presence.py", 
+                          "size": 374
+                        }, 
+                        {
+                          "name": "test_stream_xep_0066.py", 
+                          "size": 44
+                        }, 
+                        {
+                          "name": "test_stream_xep_0249.py", 
+                          "size": 63
+                        }, 
+                        {
+                          "name": "test_stanza_base.py", 
+                          "size": 79
+                        }, 
+                        {
+                          "name": "test_stanza_xep_0059.py", 
+                          "size": 106
+                        }, 
+                        {
+                          "name": "test_stream_filters.py", 
+                          "size": 88
+                        }, 
+                        {
+                          "name": "test_stanza_xep_0009.py", 
+                          "size": 314
+                        }, 
+                        {
+                          "name": "test_jid.py", 
+                          "size": 282
+                        }, 
+                        {
+                          "name": "__init__.py", 
+                          "size": 0
+                        }, 
+                        {
+                          "name": "test_stream_xep_0128.py", 
+                          "size": 105
+                        }, 
+                        {
+                          "name": "test_stanza_xep_0060.py", 
+                          "size": 575
+                        }, 
+                        {
+                          "name": "test_stanza_xep_0050.py", 
+                          "size": 114
+                        }, 
+                        {
+                          "name": "test_tostring.py", 
+                          "size": 119
+                        }, 
+                        {
+                          "name": "test_stream_xep_0085.py", 
+                          "size": 59
+                        }, 
+                        {
+                          "name": "test_stream_xep_0047.py", 
+                          "size": 180
+                        }, 
+                        {
+                          "name": "test_overall.py", 
+                          "size": 29
+                        }, 
+                        {
+                          "name": "test_stanza_xep_0033.py", 
+                          "size": 111
+                        }
+                      ]
+                    }, 
+                    {
+                      "name": "docs", 
+                      "children": [
+                        {
+                          "name": "conf.py", 
+                          "size": 222
+                        }, 
+                        {
+                          "name": "_templates", 
+                          "children": []
+                        }, 
+                        {
+                          "name": "howto", 
+                          "children": []
+                        }, 
+                        {
+                          "name": "api", 
+                          "children": [
+                            {
+                              "name": "xmlstream", 
+                              "children": []
+                            }
+                          ]
+                        }, 
+                        {
+                          "name": "_static", 
+                          "children": [
+                            {
+                              "name": "images", 
+                              "children": []
+                            }, 
+                            {
+                              "name": "fonts", 
+                              "children": []
+                            }
+                          ]
+                        }, 
+                        {
+                          "name": "getting_started", 
+                          "children": []
+                        }
+                      ]
+                    }, 
+                    {
+                      "name": "examples", 
+                      "children": [
+                        {
+                          "name": "rpc_client_side.py", 
+                          "size": 53
+                        }, 
+                        {
+                          "name": "pubsub_events.py", 
+                          "size": 151
+                        }, 
+                        {
+                          "name": "pubsub_client.py", 
+                          "size": 198
+                        }, 
+                        {
+                          "name": "muc.py", 
+                          "size": 193
+                        }, 
+                        {
+                          "name": "adhoc_provider.py", 
+                          "size": 204
+                        }, 
+                        {
+                          "name": "roster_browser.py", 
+                          "size": 172
+                        }, 
+                        {
+                          "name": "rpc_server_side.py", 
+                          "size": 52
+                        }, 
+                        {
+                          "name": "ping.py", 
+                          "size": 141
+                        }, 
+                        {
+                          "name": "download_avatars.py", 
+                          "size": 184
+                        }, 
+                        {
+                          "name": "disco_browser.py", 
+                          "size": 204
+                        }, 
+                        {
+                          "name": "ibb_transfer", 
+                          "children": [
+                            {
+                              "name": "ibb_receiver.py", 
+                              "size": 149
+                            }, 
+                            {
+                              "name": "ibb_sender.py", 
+                              "size": 145
+                            }
+                          ]
+                        }, 
+                        {
+                          "name": "admin_commands.py", 
+                          "size": 178
+                        }, 
+                        {
+                          "name": "register_account.py", 
+                          "size": 175
+                        }, 
+                        {
+                          "name": "echo_component.py", 
+                          "size": 122
+                        }, 
+                        {
+                          "name": "user_tune.py", 
+                          "size": 137
+                        }, 
+                        {
+                          "name": "send_client.py", 
+                          "size": 143
+                        }, 
+                        {
+                          "name": "thirdparty_auth.py", 
+                          "size": 247
+                        }, 
+                        {
+                          "name": "thirdpary_auth.py", 
+                          "size": 247
+                        }, 
+                        {
+                          "name": "set_avatar.py", 
+                          "size": 174
+                        }, 
+                        {
+                          "name": "user_location.py", 
+                          "size": 125
+                        }, 
+                        {
+                          "name": "custom_stanzas", 
+                          "children": [
+                            {
+                              "name": "custom_stanza_user.py", 
+                              "size": 175
+                            }, 
+                            {
+                              "name": "custom_stanza_provider.py", 
+                              "size": 173
+                            }, 
+                            {
+                              "name": "stanza.py", 
+                              "size": 56
+                            }
+                          ]
+                        }, 
+                        {
+                          "name": "proxy_echo_client.py", 
+                          "size": 168
+                        }, 
+                        {
+                          "name": "rpc_async.py", 
+                          "size": 44
+                        }, 
+                        {
+                          "name": "echo_client.py", 
+                          "size": 157
+                        }, 
+                        {
+                          "name": "gtalk_custom_domain.py", 
+                          "size": 165
+                        }, 
+                        {
+                          "name": "adhoc_user.py", 
+                          "size": 210
+                        }
+                      ]
+                    }, 
+                    {
+                      "name": "roster_browser.py", 
+                      "size": 172
+                    }, 
+                    {
+                      "name": "ez_setup.py", 
+                      "size": 233
+                    }, 
+                    {
+                      "name": "testall.py", 
+                      "size": 63
+                    }, 
+                    {
+                      "name": "setup.py", 
+                      "size": 138
+                    }, 
+                    {
+                      "name": "sleekxmpp", 
+                      "children": [
+                        {
+                          "name": "api.py", 
+                          "size": 200
+                        }, 
+                        {
+                          "name": "thirdparty", 
+                          "children": [
+                            {
+                              "name": "socks.py", 
+                              "size": 382
+                            }, 
+                            {
+                              "name": "suelta", 
+                              "children": [
+                                {
+                                  "name": "mechanisms", 
+                                  "children": [
+                                    {
+                                      "name": "scram_hmac.py", 
+                                      "size": 176
+                                    }, 
+                                    {
+                                      "name": "messenger_oauth2.py", 
+                                      "size": 17
+                                    }, 
+                                    {
+                                      "name": "__init__.py", 
+                                      "size": 8
+                                    }, 
+                                    {
+                                      "name": "cram_md5.py", 
+                                      "size": 63
+                                    }, 
+                                    {
+                                      "name": "digest_md5.py", 
+                                      "size": 275
+                                    }, 
+                                    {
+                                      "name": "facebook_platform.py", 
+                                      "size": 43
+                                    }, 
+                                    {
+                                      "name": "anonymous.py", 
+                                      "size": 36
+                                    }, 
+                                    {
+                                      "name": "plain.py", 
+                                      "size": 61
+                                    }, 
+                                    {
+                                      "name": "google_token.py", 
+                                      "size": 22
+                                    }
+                                  ]
+                                }, 
+                                {
+                                  "name": "exceptions.py", 
+                                  "size": 35
+                                }, 
+                                {
+                                  "name": "util.py", 
+                                  "size": 121
+                                }, 
+                                {
+                                  "name": "__init__.py", 
+                                  "size": 26
+                                }, 
+                                {
+                                  "name": "sasl.py", 
+                                  "size": 402
+                                }, 
+                                {
+                                  "name": "saslprep.py", 
+                                  "size": 81
+                                }
+                              ]
+                            }, 
+                            {
+                              "name": "gnupg.py", 
+                              "size": 1017
+                            }, 
+                            {
+                              "name": "mini_dateutil.py", 
+                              "size": 273
+                            }, 
+                            {
+                              "name": "__init__.py", 
+                              "size": 12
+                            }, 
+                            {
+                              "name": "statemachine.py", 
+                              "size": 285
+                            }, 
+                            {
+                              "name": "ordereddict.py", 
+                              "size": 127
+                            }
+                          ]
+                        }, 
+                        {
+                          "name": "features", 
+                          "children": [
+                            {
+                              "name": "feature_session", 
+                              "children": [
+                                {
+                                  "name": "session.py", 
+                                  "size": 54
+                                }, 
+                                {
+                                  "name": "__init__.py", 
+                                  "size": 19
+                                }, 
+                                {
+                                  "name": "stanza.py", 
+                                  "size": 20
+                                }
+                              ]
+                            }, 
+                            {
+                              "name": "__init__.py", 
+                              "size": 16
+                            }, 
+                            {
+                              "name": "feature_mechanisms", 
+                              "children": [
+                                {
+                                  "name": "mechanisms.py", 
+                                  "size": 242
+                                }, 
+                                {
+                                  "name": "stanza", 
+                                  "children": [
+                                    {
+                                      "name": "abort.py", 
+                                      "size": 24
+                                    }, 
+                                    {
+                                      "name": "__init__.py", 
+                                      "size": 16
+                                    }, 
+                                    {
+                                      "name": "failure.py", 
+                                      "size": 76
+                                    }, 
+                                    {
+                                      "name": "success.py", 
+                                      "size": 38
+                                    }, 
+                                    {
+                                      "name": "mechanisms.py", 
+                                      "size": 53
+                                    }, 
+                                    {
+                                      "name": "challenge.py", 
+                                      "size": 39
+                                    }, 
+                                    {
+                                      "name": "response.py", 
+                                      "size": 39
+                                    }, 
+                                    {
+                                      "name": "auth.py", 
+                                      "size": 49
+                                    }
+                                  ]
+                                }, 
+                                {
+                                  "name": "__init__.py", 
+                                  "size": 22
+                                }
+                              ]
+                            }, 
+                            {
+                              "name": "feature_rosterver", 
+                              "children": [
+                                {
+                                  "name": "rosterver.py", 
+                                  "size": 42
+                                }, 
+                                {
+                                  "name": "__init__.py", 
+                                  "size": 19
+                                }, 
+                                {
+                                  "name": "stanza.py", 
+                                  "size": 17
+                                }
+                              ]
+                            }, 
+                            {
+                              "name": "feature_bind", 
+                              "children": [
+                                {
+                                  "name": "bind.py", 
+                                  "size": 65
+                                }, 
+                                {
+                                  "name": "__init__.py", 
+                                  "size": 19
+                                }, 
+                                {
+                                  "name": "stanza.py", 
+                                  "size": 21
+                                }
+                              ]
+                            }, 
+                            {
+                              "name": "feature_starttls", 
+                              "children": [
+                                {
+                                  "name": "starttls.py", 
+                                  "size": 66
+                                }, 
+                                {
+                                  "name": "__init__.py", 
+                                  "size": 19
+                                }, 
+                                {
+                                  "name": "stanza.py", 
+                                  "size": 45
+                                }
+                              ]
+                            }, 
+                            {
+                              "name": "feature_preapproval", 
+                              "children": [
+                                {
+                                  "name": "preapproval.py", 
+                                  "size": 42
+                                }, 
+                                {
+                                  "name": "__init__.py", 
+                                  "size": 15
+                                }, 
+                                {
+                                  "name": "stanza.py", 
+                                  "size": 17
+                                }
+                              ]
+                            }
+                          ]
+                        }, 
+                        {
+                          "name": "version.py", 
+                          "size": 13
+                        }, 
+                        {
+                          "name": "roster", 
+                          "children": [
+                            {
+                              "name": "single.py", 
+                              "size": 337
+                            }, 
+                            {
+                              "name": "multi.py", 
+                              "size": 224
+                            }, 
+                            {
+                              "name": "__init__.py", 
+                              "size": 12
+                            }, 
+                            {
+                              "name": "item.py", 
+                              "size": 497
+                            }
+                          ]
+                        }, 
+                        {
+                          "name": "clientxmpp.py", 
+                          "size": 325
+                        }, 
+                        {
+                          "name": "__init__.py", 
+                          "size": 19
+                        }, 
+                        {
+                          "name": "stanza", 
+                          "children": [
+                            {
+                              "name": "atom.py", 
+                              "size": 26
+                            }, 
+                            {
+                              "name": "message.py", 
+                              "size": 199
+                            }, 
+                            {
+                              "name": "stream_error.py", 
+                              "size": 83
+                            }, 
+                            {
+                              "name": "stream_features.py", 
+                              "size": 57
+                            }, 
+                            {
+                              "name": "__init__.py", 
+                              "size": 15
+                            }, 
+                            {
+                              "name": "error.py", 
+                              "size": 174
+                            }, 
+                            {
+                              "name": "roster.py", 
+                              "size": 158
+                            }, 
+                            {
+                              "name": "nick.py", 
+                              "size": 23
+                            }, 
+                            {
+                              "name": "presence.py", 
+                              "size": 191
+                            }, 
+                            {
+                              "name": "rootstanza.py", 
+                              "size": 86
+                            }, 
+                            {
+                              "name": "iq.py", 
+                              "size": 240
+                            }, 
+                            {
+                              "name": "htmlim.py", 
+                              "size": 86
+                            }
+                          ]
+                        }, 
+                        {
+                          "name": "util", 
+                          "children": [
+                            {
+                              "name": "sasl", 
+                              "children": [
+                                {
+                                  "name": "mechanisms.py", 
+                                  "size": 542
+                                }, 
+                                {
+                                  "name": "client.py", 
+                                  "size": 172
+                                }, 
+                                {
+                                  "name": "__init__.py", 
+                                  "size": 15
+                                }
+                              ]
+                            }, 
+                            {
+                              "name": "stringprep_profiles.py", 
+                              "size": 152
+                            }, 
+                            {
+                              "name": "__init__.py", 
+                              "size": 31
+                            }, 
+                            {
+                              "name": "misc_ops.py", 
+                              "size": 151
+                            }
+                          ]
+                        }, 
+                        {
+                          "name": "basexmpp.py", 
+                          "size": 835
+                        }, 
+                        {
+                          "name": "plugins", 
+                          "children": [
+                            {
+                              "name": "xep_0033.py", 
+                              "size": 167
+                            }, 
+                            {
+                              "name": "xep_0118", 
+                              "children": [
+                                {
+                                  "name": "user_tune.py", 
+                                  "size": 96
+                                }, 
+                                {
+                                  "name": "__init__.py", 
+                                  "size": 16
+                                }, 
+                                {
+                                  "name": "stanza.py", 
+                                  "size": 25
+                                }
+                              ]
+                            }, 
+                            {
+                              "name": "xep_0115", 
+                              "children": [
+                                {
+                                  "name": "static.py", 
+                                  "size": 146
+                                }, 
+                                {
+                                  "name": "caps.py", 
+                                  "size": 333
+                                }, 
+                                {
+                                  "name": "__init__.py", 
+                                  "size": 20
+                                }, 
+                                {
+                                  "name": "stanza.py", 
+                                  "size": 19
+                                }
+                              ]
+                            }, 
+                            {
+                              "name": "xep_0108", 
+                              "children": [
+                                {
+                                  "name": "user_activity.py", 
+                                  "size": 88
+                                }, 
+                                {
+                                  "name": "__init__.py", 
+                                  "size": 16
+                                }, 
+                                {
+                                  "name": "stanza.py", 
+                                  "size": 83
+                                }
+                              ]
+                            }, 
+                            {
+                              "name": "xep_0077", 
+                              "children": [
+                                {
+                                  "name": "register.py", 
+                                  "size": 94
+                                }, 
+                                {
+                                  "name": "__init__.py", 
+                                  "size": 19
+                                }, 
+                                {
+                                  "name": "stanza.py", 
+                                  "size": 73
+                                }
+                              ]
+                            }, 
+                            {
+                              "name": "xep_0313", 
+                              "children": [
+                                {
+                                  "name": "mam.py", 
+                                  "size": 92
+                                }, 
+                                {
+                                  "name": "__init__.py", 
+                                  "size": 15
+                                }, 
+                                {
+                                  "name": "stanza.py", 
+                                  "size": 131
+                                }
+                              ]
+                            }, 
+                            {
+                              "name": "xep_0128", 
+                              "children": [
+                                {
+                                  "name": "static.py", 
+                                  "size": 73
+                                }, 
+                                {
+                                  "name": "extended_disco.py", 
+                                  "size": 99
+                                }, 
+                                {
+                                  "name": "__init__.py", 
+                                  "size": 19
+                                }
+                              ]
+                            }, 
+                            {
+                              "name": "xep_0191", 
+                              "children": [
+                                {
+                                  "name": "blocking.py", 
+                                  "size": 83
+                                }, 
+                                {
+                                  "name": "__init__.py", 
+                                  "size": 15
+                                }, 
+                                {
+                                  "name": "stanza.py", 
+                                  "size": 50
+                                }
+                              ]
+                            }, 
+                            {
+                              "name": "xep_0106.py", 
+                              "size": 26
+                            }, 
+                            {
+                              "name": "xep_0091", 
+                              "children": [
+                                {
+                                  "name": "legacy_delay.py", 
+                                  "size": 29
+                                }, 
+                                {
+                                  "name": "__init__.py", 
+                                  "size": 16
+                                }, 
+                                {
+                                  "name": "stanza.py", 
+                                  "size": 46
+                                }
+                              ]
+                            }, 
+                            {
+                              "name": "xep_0202", 
+                              "children": [
+                                {
+                                  "name": "time.py", 
+                                  "size": 98
+                                }, 
+                                {
+                                  "name": "__init__.py", 
+                                  "size": 20
+                                }, 
+                                {
+                                  "name": "stanza.py", 
+                                  "size": 127
+                                }
+                              ]
+                            }, 
+                            {
+                              "name": "xep_0242.py", 
+                              "size": 21
+                            }, 
+                            {
+                              "name": "xep_0092", 
+                              "children": [
+                                {
+                                  "name": "version.py", 
+                                  "size": 95
+                                }, 
+                                {
+                                  "name": "__init__.py", 
+                                  "size": 20
+                                }, 
+                                {
+                                  "name": "stanza.py", 
+                                  "size": 42
+                                }
+                              ]
+                            }, 
+                            {
+                              "name": "xep_0184", 
+                              "children": [
+                                {
+                                  "name": "receipt.py", 
+                                  "size": 128
+                                }, 
+                                {
+                                  "name": "__init__.py", 
+                                  "size": 19
+                                }, 
+                                {
+                                  "name": "stanza.py", 
+                                  "size": 72
+                                }
+                              ]
+                            }, 
+                            {
+                              "name": "old_0060.py", 
+                              "size": 313
+                            }, 
+                            {
+                              "name": "xep_0297", 
+                              "children": [
+                                {
+                                  "name": "forwarded.py", 
+                                  "size": 64
+                                }, 
+                                {
+                                  "name": "__init__.py", 
+                                  "size": 16
+                                }, 
+                                {
+                                  "name": "stanza.py", 
+                                  "size": 36
+                                }
+                              ]
+                            }, 
+                            {
+                              "name": "old_0009.py", 
+                              "size": 277
+                            }, 
+                            {
+                              "name": "xep_0256.py", 
+                              "size": 73
+                            }, 
+                            {
+                              "name": "xep_0153", 
+                              "children": [
+                                {
+                                  "name": "vcard_avatar.py", 
+                                  "size": 139
+                                }, 
+                                {
+                                  "name": "__init__.py", 
+                                  "size": 15
+                                }, 
+                                {
+                                  "name": "stanza.py", 
+                                  "size": 29
+                                }
+                              ]
+                            }, 
+                            {
+                              "name": "xep_0027", 
+                              "children": [
+                                {
+                                  "name": "gpg.py", 
+                                  "size": 170
+                                }, 
+                                {
+                                  "name": "__init__.py", 
+                                  "size": 15
+                                }, 
+                                {
+                                  "name": "stanza.py", 
+                                  "size": 53
+                                }
+                              ]
+                            }, 
+                            {
+                              "name": "xep_0308", 
+                              "children": [
+                                {
+                                  "name": "correction.py", 
+                                  "size": 52
+                                }, 
+                                {
+                                  "name": "__init__.py", 
+                                  "size": 15
+                                }, 
+                                {
+                                  "name": "stanza.py", 
+                                  "size": 16
+                                }
+                              ]
+                            }, 
+                            {
+                              "name": "xep_0223.py", 
+                              "size": 126
+                            }, 
+                            {
+                              "name": "xep_0249", 
+                              "children": [
+                                {
+                                  "name": "invite.py", 
+                                  "size": 83
+                                }, 
+                                {
+                                  "name": "__init__.py", 
+                                  "size": 19
+                                }, 
+                                {
+                                  "name": "stanza.py", 
+                                  "size": 39
+                                }
+                              ]
+                            }, 
+                            {
+                              "name": "xep_0004", 
+                              "children": [
+                                {
+                                  "name": "dataforms.py", 
+                                  "size": 57
+                                }, 
+                                {
+                                  "name": "stanza", 
+                                  "children": [
+                                    {
+                                      "name": "field.py", 
+                                      "size": 182
+                                    }, 
+                                    {
+                                      "name": "__init__.py", 
+                                      "size": 10
+                                    }, 
+                                    {
+                                      "name": "form.py", 
+                                      "size": 255
+                                    }
+                                  ]
+                                }, 
+                                {
+                                  "name": "__init__.py", 
+                                  "size": 22
+                                }
+                              ]
+                            }, 
+                            {
+                              "name": "xep_0198", 
+                              "children": [
+                                {
+                                  "name": "stream_management.py", 
+                                  "size": 314
+                                }, 
+                                {
+                                  "name": "__init__.py", 
+                                  "size": 20
+                                }, 
+                                {
+                                  "name": "stanza.py", 
+                                  "size": 150
+                                }
+                              ]
+                            }, 
+                            {
+                              "name": "xep_0199", 
+                              "children": [
+                                {
+                                  "name": "ping.py", 
+                                  "size": 180
+                                }, 
+                                {
+                                  "name": "__init__.py", 
+                                  "size": 20
+                                }, 
+                                {
+                                  "name": "stanza.py", 
+                                  "size": 36
+                                }
+                              ]
+                            }, 
+                            {
+                              "name": "xep_0009", 
+                              "children": [
+                                {
+                                  "name": "remote.py", 
+                                  "size": 742
+                                }, 
+                                {
+                                  "name": "rpc.py", 
+                                  "size": 218
+                                }, 
+                                {
+                                  "name": "binding.py", 
+                                  "size": 173
+                                }, 
+                                {
+                                  "name": "stanza", 
+                                  "children": [
+                                    {
+                                      "name": "RPC.py", 
+                                      "size": 64
+                                    }, 
+                                    {
+                                      "name": "__init__.py", 
+                                      "size": 9
+                                    }
+                                  ]
+                                }, 
+                                {
+                                  "name": "__init__.py", 
+                                  "size": 20
+                                }
+                              ]
+                            }, 
+                            {
+                              "name": "xep_0060", 
+                              "children": [
+                                {
+                                  "name": "pubsub.py", 
+                                  "size": 577
+                                }, 
+                                {
+                                  "name": "__init__.py", 
+                                  "size": 19
+                                }, 
+                                {
+                                  "name": "stanza", 
+                                  "children": [
+                                    {
+                                      "name": "pubsub_errors.py", 
+                                      "size": 86
+                                    }, 
+                                    {
+                                      "name": "pubsub_event.py", 
+                                      "size": 151
+                                    }, 
+                                    {
+                                      "name": "base.py", 
+                                      "size": 29
+                                    }, 
+                                    {
+                                      "name": "__init__.py", 
+                                      "size": 12
+                                    }, 
+                                    {
+                                      "name": "pubsub.py", 
+                                      "size": 300
+                                    }, 
+                                    {
+                                      "name": "pubsub_owner.py", 
+                                      "size": 131
+                                    }
+                                  ]
+                                }
+                              ]
+                            }, 
+                            {
+                              "name": "xep_0047", 
+                              "children": [
+                                {
+                                  "name": "ibb.py", 
+                                  "size": 156
+                                }, 
+                                {
+                                  "name": "stream.py", 
+                                  "size": 134
+                                }, 
+                                {
+                                  "name": "__init__.py", 
+                                  "size": 21
+                                }, 
+                                {
+                                  "name": "stanza.py", 
+                                  "size": 67
+                                }
+                              ]
+                            }, 
+                            {
+                              "name": "xep_0224", 
+                              "children": [
+                                {
+                                  "name": "attention.py", 
+                                  "size": 75
+                                }, 
+                                {
+                                  "name": "__init__.py", 
+                                  "size": 20
+                                }, 
+                                {
+                                  "name": "stanza.py", 
+                                  "size": 40
+                                }
+                              ]
+                            }, 
+                            {
+                              "name": "xep_0270.py", 
+                              "size": 20
+                            }, 
+                            {
+                              "name": "xep_0065", 
+                              "children": [
+                                {
+                                  "name": "proxy.py", 
+                                  "size": 359
+                                }, 
+                                {
+                                  "name": "__init__.py", 
+                                  "size": 5
+                                }, 
+                                {
+                                  "name": "stanza.py", 
+                                  "size": 41
+                                }
+                              ]
+                            }, 
+                            {
+                              "name": "xep_0066", 
+                              "children": [
+                                {
+                                  "name": "oob.py", 
+                                  "size": 158
+                                }, 
+                                {
+                                  "name": "__init__.py", 
+                                  "size": 20
+                                }, 
+                                {
+                                  "name": "stanza.py", 
+                                  "size": 33
+                                }
+                              ]
+                            }, 
+                            {
+                              "name": "xep_0221", 
+                              "children": [
+                                {
+                                  "name": "media.py", 
+                                  "size": 27
+                                }, 
+                                {
+                                  "name": "__init__.py", 
+                                  "size": 16
+                                }, 
+                                {
+                                  "name": "stanza.py", 
+                                  "size": 42
+                                }
+                              ]
+                            }, 
+                            {
+                              "name": "xep_0107", 
+                              "children": [
+                                {
+                                  "name": "user_mood.py", 
+                                  "size": 93
+                                }, 
+                                {
+                                  "name": "__init__.py", 
+                                  "size": 16
+                                }, 
+                                {
+                                  "name": "stanza.py", 
+                                  "size": 55
+                                }
+                              ]
+                            }, 
+                            {
+                              "name": "xep_0080", 
+                              "children": [
+                                {
+                                  "name": "geoloc.py", 
+                                  "size": 125
+                                }, 
+                                {
+                                  "name": "__init__.py", 
+                                  "size": 15
+                                }, 
+                                {
+                                  "name": "stanza.py", 
+                                  "size": 266
+                                }
+                              ]
+                            }, 
+                            {
+                              "name": "xep_0133.py", 
+                              "size": 54
+                            }, 
+                            {
+                              "name": "xep_0086", 
+                              "children": [
+                                {
+                                  "name": "legacy_error.py", 
+                                  "size": 46
+                                }, 
+                                {
+                                  "name": "__init__.py", 
+                                  "size": 19
+                                }, 
+                                {
+                                  "name": "stanza.py", 
+                                  "size": 91
+                                }
+                              ]
+                            }, 
+                            {
+                              "name": "xep_0302.py", 
+                              "size": 21
+                            }, 
+                            {
+                              "name": "xep_0163.py", 
+                              "size": 121
+                            }, 
+                            {
+                              "name": "xep_0085", 
+                              "children": [
+                                {
+                                  "name": "chat_states.py", 
+                                  "size": 56
+                                }, 
+                                {
+                                  "name": "__init__.py", 
+                                  "size": 19
+                                }, 
+                                {
+                                  "name": "stanza.py", 
+                                  "size": 94
+                                }
+                              ]
+                            }, 
+                            {
+                              "name": "jobs.py", 
+                              "size": 49
+                            }, 
+                            {
+                              "name": "xep_0231", 
+                              "children": [
+                                {
+                                  "name": "bob.py", 
+                                  "size": 138
+                                }, 
+                                {
+                                  "name": "__init__.py", 
+                                  "size": 16
+                                }, 
+                                {
+                                  "name": "stanza.py", 
+                                  "size": 35
+                                }
+                              ]
+                            }, 
+                            {
+                              "name": "xep_0078", 
+                              "children": [
+                                {
+                                  "name": "legacyauth.py", 
+                                  "size": 146
+                                }, 
+                                {
+                                  "name": "__init__.py", 
+                                  "size": 20
+                                }, 
+                                {
+                                  "name": "stanza.py", 
+                                  "size": 41
+                                }
+                              ]
+                            }, 
+                            {
+                              "name": "xep_0084", 
+                              "children": [
+                                {
+                                  "name": "avatar.py", 
+                                  "size": 110
+                                }, 
+                                {
+                                  "name": "__init__.py", 
+                                  "size": 16
+                                }, 
+                                {
+                                  "name": "stanza.py", 
+                                  "size": 78
+                                }
+                              ]
+                            }, 
+                            {
+                              "name": "gmail_notify.py", 
+                              "size": 149
+                            }, 
+                            {
+                              "name": "xep_0280", 
+                              "children": [
+                                {
+                                  "name": "carbons.py", 
+                                  "size": 81
+                                }, 
+                                {
+                                  "name": "__init__.py", 
+                                  "size": 17
+                                }, 
+                                {
+                                  "name": "stanza.py", 
+                                  "size": 64
+                                }
+                              ]
+                            }, 
+                            {
+                              "name": "xep_0258", 
+                              "children": [
+                                {
+                                  "name": "security_labels.py", 
+                                  "size": 44
+                                }, 
+                                {
+                                  "name": "__init__.py", 
+                                  "size": 18
+                                }, 
+                                {
+                                  "name": "stanza.py", 
+                                  "size": 141
+                                }
+                              ]
+                            }, 
+                            {
+                              "name": "xep_0082.py", 
+                              "size": 229
+                            }, 
+                            {
+                              "name": "xep_0049", 
+                              "children": [
+                                {
+                                  "name": "private_storage.py", 
+                                  "size": 53
+                                }, 
+                                {
+                                  "name": "__init__.py", 
+                                  "size": 15
+                                }, 
+                                {
+                                  "name": "stanza.py", 
+                                  "size": 17
+                                }
+                              ]
+                            }, 
+                            {
+                              "name": "xep_0257", 
+                              "children": [
+                                {
+                                  "name": "client_cert_management.py", 
+                                  "size": 65
+                                }, 
+                                {
+                                  "name": "__init__.py", 
+                                  "size": 17
+                                }, 
+                                {
+                                  "name": "stanza.py", 
+                                  "size": 87
+                                }
+                              ]
+                            }, 
+                            {
+                              "name": "xep_0131", 
+                              "children": [
+                                {
+                                  "name": "headers.py", 
+                                  "size": 41
+                                }, 
+                                {
+                                  "name": "__init__.py", 
+                                  "size": 16
+                                }, 
+                                {
+                                  "name": "stanza.py", 
+                                  "size": 51
+                                }
+                              ]
+                            }, 
+                            {
+                              "name": "xep_0235", 
+                              "children": [
+                                {
+                                  "name": "oauth.py", 
+                                  "size": 32
+                                }, 
+                                {
+                                  "name": "__init__.py", 
+                                  "size": 16
+                                }, 
+                                {
+                                  "name": "stanza.py", 
+                                  "size": 80
+                                }
+                              ]
+                            }, 
+                            {
+                              "name": "xep_0045.py", 
+                              "size": 396
+                            }, 
+                            {
+                              "name": "old_0004.py", 
+                              "size": 421
+                            }, 
+                            {
+                              "name": "xep_0033", 
+                              "children": [
+                                {
+                                  "name": "addresses.py", 
+                                  "size": 37
+                                }, 
+                                {
+                                  "name": "__init__.py", 
+                                  "size": 20
+                                }, 
+                                {
+                                  "name": "stanza.py", 
+                                  "size": 131
+                                }
+                              ]
+                            }, 
+                            {
+                              "name": "xep_0012", 
+                              "children": [
+                                {
+                                  "name": "last_activity.py", 
+                                  "size": 157
+                                }, 
+                                {
+                                  "name": "__init__.py", 
+                                  "size": 19
+                                }, 
+                                {
+                                  "name": "stanza.py", 
+                                  "size": 32
+                                }
+                              ]
+                            }, 
+                            {
+                              "name": "base.py", 
+                              "size": 360
+                            }, 
+                            {
+                              "name": "__init__.py", 
+                              "size": 80
+                            }, 
+                            {
+                              "name": "xep_0203", 
+                              "children": [
+                                {
+                                  "name": "delay.py", 
+                                  "size": 37
+                                }, 
+                                {
+                                  "name": "__init__.py", 
+                                  "size": 19
+                                }, 
+                                {
+                                  "name": "stanza.py", 
+                                  "size": 44
+                                }
+                              ]
+                            }, 
+                            {
+                              "name": "xep_0059", 
+                              "children": [
+                                {
+                                  "name": "rsm.py", 
+                                  "size": 145
+                                }, 
+                                {
+                                  "name": "__init__.py", 
+                                  "size": 18
+                                }, 
+                                {
+                                  "name": "stanza.py", 
+                                  "size": 108
+                                }
+                              ]
+                            }, 
+                            {
+                              "name": "xep_0016", 
+                              "children": [
+                                {
+                                  "name": "privacy.py", 
+                                  "size": 110
+                                }, 
+                                {
+                                  "name": "__init__.py", 
+                                  "size": 16
+                                }, 
+                                {
+                                  "name": "stanza.py", 
+                                  "size": 103
+                                }
+                              ]
+                            }, 
+                            {
+                              "name": "xep_0186", 
+                              "children": [
+                                {
+                                  "name": "__init__.py", 
+                                  "size": 16
+                                }, 
+                                {
+                                  "name": "invisible_command.py", 
+                                  "size": 44
+                                }, 
+                                {
+                                  "name": "stanza.py", 
+                                  "size": 23
+                                }
+                              ]
+                            }, 
+                            {
+                              "name": "xep_0013", 
+                              "children": [
+                                {
+                                  "name": "offline.py", 
+                                  "size": 134
+                                }, 
+                                {
+                                  "name": "__init__.py", 
+                                  "size": 15
+                                }, 
+                                {
+                                  "name": "stanza.py", 
+                                  "size": 53
+                                }
+                              ]
+                            }, 
+                            {
+                              "name": "old_0050.py", 
+                              "size": 133
+                            }, 
+                            {
+                              "name": "xep_0222.py", 
+                              "size": 126
+                            }, 
+                            {
+                              "name": "xep_0050", 
+                              "children": [
+                                {
+                                  "name": "adhoc.py", 
+                                  "size": 654
+                                }, 
+                                {
+                                  "name": "__init__.py", 
+                                  "size": 19
+                                }, 
+                                {
+                                  "name": "stanza.py", 
+                                  "size": 185
+                                }
+                              ]
+                            }, 
+                            {
+                              "name": "xep_0172", 
+                              "children": [
+                                {
+                                  "name": "user_nick.py", 
+                                  "size": 92
+                                }, 
+                                {
+                                  "name": "__init__.py", 
+                                  "size": 16
+                                }, 
+                                {
+                                  "name": "stanza.py", 
+                                  "size": 67
+                                }
+                              ]
+                            }, 
+                            {
+                              "name": "xep_0279", 
+                              "children": [
+                                {
+                                  "name": "ipcheck.py", 
+                                  "size": 39
+                                }, 
+                                {
+                                  "name": "__init__.py", 
+                                  "size": 16
+                                }, 
+                                {
+                                  "name": "stanza.py", 
+                                  "size": 30
+                                }
+                              ]
+                            }, 
+                            {
+                              "name": "xep_0054", 
+                              "children": [
+                                {
+                                  "name": "vcard_temp.py", 
+                                  "size": 136
+                                }, 
+                                {
+                                  "name": "__init__.py", 
+                                  "size": 15
+                                }, 
+                                {
+                                  "name": "stanza.py", 
+                                  "size": 561
+                                }
+                              ]
+                            }, 
+                            {
+                              "name": "xep_0030", 
+                              "children": [
+                                {
+                                  "name": "static.py", 
+                                  "size": 430
+                                }, 
+                                {
+                                  "name": "disco.py", 
+                                  "size": 734
+                                }, 
+                                {
+                                  "name": "stanza", 
+                                  "children": [
+                                    {
+                                      "name": "items.py", 
+                                      "size": 151
+                                    }, 
+                                    {
+                                      "name": "info.py", 
+                                      "size": 276
+                                    }, 
+                                    {
+                                      "name": "__init__.py", 
+                                      "size": 10
+                                    }
+                                  ]
+                                }, 
+                                {
+                                  "name": "__init__.py", 
+                                  "size": 23
+                                }
+                              ]
+                            }
+                          ]
+                        }, 
+                        {
+                          "name": "test", 
+                          "children": [
+                            {
+                              "name": "livesocket.py", 
+                              "size": 172
+                            }, 
+                            {
+                              "name": "mocksocket.py", 
+                              "size": 153
+                            }, 
+                            {
+                              "name": "__init__.py", 
+                              "size": 11
+                            }, 
+                            {
+                              "name": "sleektest.py", 
+                              "size": 772
+                            }
+                          ]
+                        }, 
+                        {
+                          "name": "xmlstream", 
+                          "children": [
+                            {
+                              "name": "testclient.py", 
+                              "size": 13
+                            }, 
+                            {
+                              "name": "cert.py", 
+                              "size": 180
+                            }, 
+                            {
+                              "name": "test.py", 
+                              "size": 23
+                            }, 
+                            {
+                              "name": "filesocket.py", 
+                              "size": 47
+                            }, 
+                            {
+                              "name": "tostring.py", 
+                              "size": 157
+                            }, 
+                            {
+                              "name": "matcher", 
+                              "children": [
+                                {
+                                  "name": "xmlmask.py", 
+                                  "size": 158
+                                }, 
+                                {
+                                  "name": "stanzapath.py", 
+                                  "size": 43
+                                }, 
+                                {
+                                  "name": "id.py", 
+                                  "size": 29
+                                }, 
+                                {
+                                  "name": "xpath.py", 
+                                  "size": 86
+                                }, 
+                                {
+                                  "name": "base.py", 
+                                  "size": 31
+                                }, 
+                                {
+                                  "name": "__init__.py", 
+                                  "size": 16
+                                }, 
+                                {
+                                  "name": "many.py", 
+                                  "size": 40
+                                }
+                              ]
+                            }, 
+                            {
+                              "name": "__init__.py", 
+                              "size": 19
+                            }, 
+                            {
+                              "name": "xmlstream.py", 
+                              "size": 1766
+                            }, 
+                            {
+                              "name": "resolver.py", 
+                              "size": 307
+                            }, 
+                            {
+                              "name": "scheduler.py", 
+                              "size": 240
+                            }, 
+                            {
+                              "name": "stanzabase.py", 
+                              "size": 1636
+                            }, 
+                            {
+                              "name": "jid.py", 
+                              "size": 5
+                            }, 
+                            {
+                              "name": "handler", 
+                              "children": [
+                                {
+                                  "name": "xmlcallback.py", 
+                                  "size": 36
+                                }, 
+                                {
+                                  "name": "waiter.py", 
+                                  "size": 83
+                                }, 
+                                {
+                                  "name": "base.py", 
+                                  "size": 84
+                                }, 
+                                {
+                                  "name": "__init__.py", 
+                                  "size": 15
+                                }, 
+                                {
+                                  "name": "callback.py", 
+                                  "size": 79
+                                }, 
+                                {
+                                  "name": "xmlwaiter.py", 
+                                  "size": 33
+                                }, 
+                                {
+                                  "name": "collector.py", 
+                                  "size": 66
+                                }
+                              ]
+                            }
+                          ]
+                        }, 
+                        {
+                          "name": "jid.py", 
+                          "size": 569
+                        }, 
+                        {
+                          "name": "exceptions.py", 
+                          "size": 91
+                        }, 
+                        {
+                          "name": "componentxmpp.py", 
+                          "size": 165
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }, 
+            {
+              "name": "cache", 
+              "children": [
+                {
+                  "name": "AvatarCache.py", 
+                  "size": 142
+                }, 
+                {
+                  "name": "CacheManager.py", 
+                  "size": 40
+                }, 
+                {
+                  "name": "Cache.py", 
+                  "size": 130
+                }, 
+                {
+                  "name": "__init__.py", 
+                  "size": 3
+                }, 
+                {
+                  "name": "EmoticonCache.py", 
+                  "size": 158
+                }
+              ]
+            }, 
+            {
+              "name": "__init__.py", 
+              "size": 3
+            }, 
+            {
+              "name": "webqq", 
+              "children": [
+                {
+                  "name": "Worker.py", 
+                  "size": 536
+                }, 
+                {
+                  "name": "Session.py", 
+                  "size": 71
+                }, 
+                {
+                  "name": "__init__.py", 
+                  "size": 2
+                }
+              ]
+            }, 
+            {
+              "name": "papylib", 
+              "children": [
+                {
+                  "name": "Session.py", 
+                  "size": 197
+                }, 
+                {
+                  "name": "PapyEvents.py", 
+                  "size": 290
+                }, 
+                {
+                  "name": "__init__.py", 
+                  "size": 23
+                }, 
+                {
+                  "name": "Worker.py", 
+                  "size": 1486
+                }, 
+                {
+                  "name": "papyon", 
+                  "children": [
+                    {
+                      "name": "papyon", 
+                      "children": [
+                        {
+                          "name": "switchboard_manager.py", 
+                          "size": 481
+                        }, 
+                        {
+                          "name": "msnp", 
+                          "children": [
+                            {
+                              "name": "message.py", 
+                              "size": 80
+                            }, 
+                            {
+                              "name": "switchboard.py", 
+                              "size": 359
+                            }, 
+                            {
+                              "name": "mailbox.py", 
+                              "size": 123
+                            }, 
+                            {
+                              "name": "constants.py", 
+                              "size": 61
+                            }, 
+                            {
+                              "name": "command.py", 
+                              "size": 250
+                            }, 
+                            {
+                              "name": "base.py", 
+                              "size": 129
+                            }, 
+                            {
+                              "name": "__init__.py", 
+                              "size": 29
+                            }, 
+                            {
+                              "name": "notification.py", 
+                              "size": 944
+                            }, 
+                            {
+                              "name": "challenge.py", 
+                              "size": 78
+                            }
+                          ]
+                        }, 
+                        {
+                          "name": "p2p.py", 
+                          "size": 726
+                        }, 
+                        {
+                          "name": "service", 
+                          "children": [
+                            {
+                              "name": "SingleSignOn.py", 
+                              "size": 294
+                            }, 
+                            {
+                              "name": "description", 
+                              "children": [
+                                {
+                                  "name": "OIM", 
+                                  "children": [
+                                    {
+                                      "name": "__init__.py", 
+                                      "size": 25
+                                    }, 
+                                    {
+                                      "name": "Store2.py", 
+                                      "size": 70
+                                    }
+                                  ]
+                                }, 
+                                {
+                                  "name": "Sharing", 
+                                  "children": [
+                                    {
+                                      "name": "DeleteMember.py", 
+                                      "size": 76
+                                    }, 
+                                    {
+                                      "name": "AddMember.py", 
+                                      "size": 80
+                                    }, 
+                                    {
+                                      "name": "FindMembership.py", 
+                                      "size": 81
+                                    }, 
+                                    {
+                                      "name": "__init__.py", 
+                                      "size": 27
+                                    }, 
+                                    {
+                                      "name": "common.py", 
+                                      "size": 37
+                                    }
+                                  ]
+                                }, 
+                                {
+                                  "name": "SingleSignOn", 
+                                  "children": [
+                                    {
+                                      "name": "RequestMultipleSecurityTokens.py", 
+                                      "size": 122
+                                    }, 
+                                    {
+                                      "name": "__init__.py", 
+                                      "size": 27
+                                    }
+                                  ]
+                                }, 
+                                {
+                                  "name": "RSI", 
+                                  "children": [
+                                    {
+                                      "name": "GetMetadata.py", 
+                                      "size": 41
+                                    }, 
+                                    {
+                                      "name": "GetMessage.py", 
+                                      "size": 49
+                                    }, 
+                                    {
+                                      "name": "DeleteMessages.py", 
+                                      "size": 49
+                                    }, 
+                                    {
+                                      "name": "__init__.py", 
+                                      "size": 27
+                                    }, 
+                                    {
+                                      "name": "common.py", 
+                                      "size": 33
+                                    }
+                                  ]
+                                }, 
+                                {
+                                  "name": "__init__.py", 
+                                  "size": 30
+                                }, 
+                                {
+                                  "name": "Spaces", 
+                                  "children": [
+                                    {
+                                      "name": "__init__.py", 
+                                      "size": 25
+                                    }, 
+                                    {
+                                      "name": "GetXmlFeed.py", 
+                                      "size": 78
+                                    }
+                                  ]
+                                }, 
+                                {
+                                  "name": "SchematizedStore", 
+                                  "children": [
+                                    {
+                                      "name": "common.py", 
+                                      "size": 37
+                                    }, 
+                                    {
+                                      "name": "UpdateProfile.py", 
+                                      "size": 61
+                                    }, 
+                                    {
+                                      "name": "FindDocuments.py", 
+                                      "size": 81
+                                    }, 
+                                    {
+                                      "name": "CreateDocument.py", 
+                                      "size": 79
+                                    }, 
+                                    {
+                                      "name": "__init__.py", 
+                                      "size": 32
+                                    }, 
+                                    {
+                                      "name": "DeleteRelationships.py", 
+                                      "size": 66
+                                    }, 
+                                    {
+                                      "name": "CreateRelationships.py", 
+                                      "size": 60
+                                    }, 
+                                    {
+                                      "name": "GetProfile.py", 
+                                      "size": 78
+                                    }
+                                  ]
+                                }, 
+                                {
+                                  "name": "AB", 
+                                  "children": [
+                                    {
+                                      "name": "ABFindAll.py", 
+                                      "size": 64
+                                    }, 
+                                    {
+                                      "name": "ABGroupContactAdd.py", 
+                                      "size": 65
+                                    }, 
+                                    {
+                                      "name": "ABGroupAdd.py", 
+                                      "size": 72
+                                    }, 
+                                    {
+                                      "name": "ABGroupContactDelete.py", 
+                                      "size": 59
+                                    }, 
+                                    {
+                                      "name": "constants.py", 
+                                      "size": 71
+                                    }, 
+                                    {
+                                      "name": "ABAdd.py", 
+                                      "size": 48
+                                    }, 
+                                    {
+                                      "name": "ABGroupUpdate.py", 
+                                      "size": 63
+                                    }, 
+                                    {
+                                      "name": "ABContactAdd.py", 
+                                      "size": 187
+                                    }, 
+                                    {
+                                      "name": "__init__.py", 
+                                      "size": 39
+                                    }, 
+                                    {
+                                      "name": "common.py", 
+                                      "size": 35
+                                    }, 
+                                    {
+                                      "name": "ABContactUpdate.py", 
+                                      "size": 186
+                                    }, 
+                                    {
+                                      "name": "ABGroupDelete.py", 
+                                      "size": 52
+                                    }, 
+                                    {
+                                      "name": "ABContactDelete.py", 
+                                      "size": 52
+                                    }
+                                  ]
+                                }
+                              ]
+                            }, 
+                            {
+                              "name": "ContentRoaming", 
+                              "children": [
+                                {
+                                  "name": "storage.py", 
+                                  "size": 183
+                                }, 
+                                {
+                                  "name": "content_roaming.py", 
+                                  "size": 247
+                                }, 
+                                {
+                                  "name": "constants.py", 
+                                  "size": 71
+                                }, 
+                                {
+                                  "name": "__init__.py", 
+                                  "size": 21
+                                }, 
+                                {
+                                  "name": "scenario", 
+                                  "children": [
+                                    {
+                                      "name": "store_profile.py", 
+                                      "size": 85
+                                    }, 
+                                    {
+                                      "name": "get_stored_profile.py", 
+                                      "size": 55
+                                    }, 
+                                    {
+                                      "name": "base.py", 
+                                      "size": 39
+                                    }, 
+                                    {
+                                      "name": "__init__.py", 
+                                      "size": 26
+                                    }
+                                  ]
+                                }
+                              ]
+                            }, 
+                            {
+                              "name": "SOAPService.py", 
+                              "size": 312
+                            }, 
+                            {
+                              "name": "errors.py", 
+                              "size": 26
+                            }, 
+                            {
+                              "name": "AddressBook", 
+                              "children": [
+                                {
+                                  "name": "scenario", 
+                                  "children": [
+                                    {
+                                      "name": "groups", 
+                                      "children": [
+                                        {
+                                          "name": "group_contact_delete.py", 
+                                          "size": 41
+                                        }, 
+                                        {
+                                          "name": "group_rename.py", 
+                                          "size": 41
+                                        }, 
+                                        {
+                                          "name": "group_delete.py", 
+                                          "size": 38
+                                        }, 
+                                        {
+                                          "name": "__init__.py", 
+                                          "size": 25
+                                        }, 
+                                        {
+                                          "name": "group_contact_add.py", 
+                                          "size": 41
+                                        }, 
+                                        {
+                                          "name": "group_add.py", 
+                                          "size": 38
+                                        }
+                                      ]
+                                    }, 
+                                    {
+                                      "name": "contacts", 
+                                      "children": [
+                                        {
+                                          "name": "decline_invite.py", 
+                                          "size": 60
+                                        }, 
+                                        {
+                                          "name": "accept_invite.py", 
+                                          "size": 63
+                                        }, 
+                                        {
+                                          "name": "contact_delete.py", 
+                                          "size": 43
+                                        }, 
+                                        {
+                                          "name": "messenger_contact_add.py", 
+                                          "size": 75
+                                        }, 
+                                        {
+                                          "name": "allow_contact.py", 
+                                          "size": 57
+                                        }, 
+                                        {
+                                          "name": "__init__.py", 
+                                          "size": 35
+                                        }, 
+                                        {
+                                          "name": "unblock_contact.py", 
+                                          "size": 57
+                                        }, 
+                                        {
+                                          "name": "mobile_contact_add.py", 
+                                          "size": 80
+                                        }, 
+                                        {
+                                          "name": "email_contact_add.py", 
+                                          "size": 77
+                                        }, 
+                                        {
+                                          "name": "block_contact.py", 
+                                          "size": 57
+                                        }, 
+                                        {
+                                          "name": "contact_update_properties.py", 
+                                          "size": 44
+                                        }, 
+                                        {
+                                          "name": "disallow_contact.py", 
+                                          "size": 57
+                                        }, 
+                                        {
+                                          "name": "update_memberships.py", 
+                                          "size": 137
+                                        }
+                                      ]
+                                    }, 
+                                    {
+                                      "name": "base.py", 
+                                      "size": 58
+                                    }, 
+                                    {
+                                      "name": "__init__.py", 
+                                      "size": 26
+                                    }, 
+                                    {
+                                      "name": "sync", 
+                                      "children": [
+                                        {
+                                          "name": "sync.py", 
+                                          "size": 62
+                                        }, 
+                                        {
+                                          "name": "__init__.py", 
+                                          "size": 20
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                }, 
+                                {
+                                  "name": "constants.py", 
+                                  "size": 127
+                                }, 
+                                {
+                                  "name": "address_book.py", 
+                                  "size": 954
+                                }, 
+                                {
+                                  "name": "__init__.py", 
+                                  "size": 22
+                                }, 
+                                {
+                                  "name": "common.py", 
+                                  "size": 33
+                                }, 
+                                {
+                                  "name": "sharing.py", 
+                                  "size": 285
+                                }, 
+                                {
+                                  "name": "ab.py", 
+                                  "size": 479
+                                }
+                              ]
+                            }, 
+                            {
+                              "name": "__init__.py", 
+                              "size": 27
+                            }, 
+                            {
+                              "name": "SOAPUtils.py", 
+                              "size": 63
+                            }, 
+                            {
+                              "name": "Spaces", 
+                              "children": [
+                                {
+                                  "name": "spaces.py", 
+                                  "size": 105
+                                }, 
+                                {
+                                  "name": "contactcardservice.py", 
+                                  "size": 122
+                                }, 
+                                {
+                                  "name": "constants.py", 
+                                  "size": 42
+                                }, 
+                                {
+                                  "name": "__init__.py", 
+                                  "size": 22
+                                }, 
+                                {
+                                  "name": "scenario", 
+                                  "children": [
+                                    {
+                                      "name": "get_contact_card.py", 
+                                      "size": 37
+                                    }, 
+                                    {
+                                      "name": "base.py", 
+                                      "size": 32
+                                    }, 
+                                    {
+                                      "name": "__init__.py", 
+                                      "size": 25
+                                    }
+                                  ]
+                                }
+                              ]
+                            }, 
+                            {
+                              "name": "OfflineIM", 
+                              "children": [
+                                {
+                                  "name": "scenario", 
+                                  "children": [
+                                    {
+                                      "name": "sync_headers.py", 
+                                      "size": 36
+                                    }, 
+                                    {
+                                      "name": "fetch_messages.py", 
+                                      "size": 49
+                                    }, 
+                                    {
+                                      "name": "base.py", 
+                                      "size": 32
+                                    }, 
+                                    {
+                                      "name": "__init__.py", 
+                                      "size": 28
+                                    }, 
+                                    {
+                                      "name": "send_message.py", 
+                                      "size": 55
+                                    }, 
+                                    {
+                                      "name": "delete_messages.py", 
+                                      "size": 38
+                                    }
+                                  ]
+                                }, 
+                                {
+                                  "name": "constants.py", 
+                                  "size": 62
+                                }, 
+                                {
+                                  "name": "offline_messages_box.py", 
+                                  "size": 428
+                                }, 
+                                {
+                                  "name": "rsi.py", 
+                                  "size": 82
+                                }, 
+                                {
+                                  "name": "__init__.py", 
+                                  "size": 22
+                                }, 
+                                {
+                                  "name": "oim.py", 
+                                  "size": 98
+                                }
+                              ]
+                            }
+                          ]
+                        }, 
+                        {
+                          "name": "transport.py", 
+                          "size": 505
+                        }, 
+                        {
+                          "name": "conversation.py", 
+                          "size": 501
+                        }, 
+                        {
+                          "name": "util", 
+                          "children": [
+                            {
+                              "name": "debug.py", 
+                              "size": 46
+                            }, 
+                            {
+                              "name": "string_io.py", 
+                              "size": 26
+                            }, 
+                            {
+                              "name": "timer.py", 
+                              "size": 78
+                            }, 
+                            {
+                              "name": "guid.py", 
+                              "size": 32
+                            }, 
+                            {
+                              "name": "decorator.py", 
+                              "size": 121
+                            }, 
+                            {
+                              "name": "weak.py", 
+                              "size": 57
+                            }, 
+                            {
+                              "name": "odict.py", 
+                              "size": 52
+                            }, 
+                            {
+                              "name": "async.py", 
+                              "size": 40
+                            }, 
+                            {
+                              "name": "__init__.py", 
+                              "size": 20
+                            }, 
+                            {
+                              "name": "iso8601", 
+                              "children": [
+                                {
+                                  "name": "test_iso8601.py", 
+                                  "size": 106
+                                }, 
+                                {
+                                  "name": "iso8601.py", 
+                                  "size": 102
+                                }, 
+                                {
+                                  "name": "__init__.py", 
+                                  "size": 1
+                                }
+                              ]
+                            }, 
+                            {
+                              "name": "tlv.py", 
+                              "size": 106
+                            }, 
+                            {
+                              "name": "element_tree.py", 
+                              "size": 191
+                            }, 
+                            {
+                              "name": "queue.py", 
+                              "size": 64
+                            }, 
+                            {
+                              "name": "encoding.py", 
+                              "size": 93
+                            }, 
+                            {
+                              "name": "parsing.py", 
+                              "size": 45
+                            }
+                          ]
+                        }, 
+                        {
+                          "name": "errors.py", 
+                          "size": 77
+                        }, 
+                        {
+                          "name": "gnet", 
+                          "children": [
+                            {
+                              "name": "protocol", 
+                              "children": [
+                                {
+                                  "name": "HTTP.py", 
+                                  "size": 220
+                                }, 
+                                {
+                                  "name": "HTTPS.py", 
+                                  "size": 53
+                                }, 
+                                {
+                                  "name": "__init__.py", 
+                                  "size": 35
+                                }
+                              ]
+                            }, 
+                            {
+                              "name": "io", 
+                              "children": [
+                                {
+                                  "name": "ssl_tcp.py", 
+                                  "size": 51
+                                }, 
+                                {
+                                  "name": "sock.py", 
+                                  "size": 113
+                                }, 
+                                {
+                                  "name": "abstract.py", 
+                                  "size": 180
+                                }, 
+                                {
+                                  "name": "__init__.py", 
+                                  "size": 27
+                                }, 
+                                {
+                                  "name": "ssl_socket.py", 
+                                  "size": 125
+                                }, 
+                                {
+                                  "name": "iochannel.py", 
+                                  "size": 187
+                                }, 
+                                {
+                                  "name": "tcp.py", 
+                                  "size": 56
+                                }
+                              ]
+                            }, 
+                            {
+                              "name": "constants.py", 
+                              "size": 38
+                            }, 
+                            {
+                              "name": "errors.py", 
+                              "size": 116
+                            }, 
+                            {
+                              "name": "__init__.py", 
+                              "size": 28
+                            }, 
+                            {
+                              "name": "parser.py", 
+                              "size": 214
+                            }, 
+                            {
+                              "name": "proxy", 
+                              "children": [
+                                {
+                                  "name": "SOCKS5.py", 
+                                  "size": 273
+                                }, 
+                                {
+                                  "name": "abstract.py", 
+                                  "size": 48
+                                }, 
+                                {
+                                  "name": "__init__.py", 
+                                  "size": 23
+                                }, 
+                                {
+                                  "name": "proxyfiable.py", 
+                                  "size": 37
+                                }, 
+                                {
+                                  "name": "proxy_infos.py", 
+                                  "size": 117
+                                }, 
+                                {
+                                  "name": "factory.py", 
+                                  "size": 39
+                                }, 
+                                {
+                                  "name": "SOCKS4.py", 
+                                  "size": 132
+                                }, 
+                                {
+                                  "name": "HTTPConnect.py", 
+                                  "size": 117
+                                }
+                              ]
+                            }, 
+                            {
+                              "name": "resolver.py", 
+                              "size": 105
+                            }, 
+                            {
+                              "name": "message", 
+                              "children": [
+                                {
+                                  "name": "HTTP.py", 
+                                  "size": 198
+                                }, 
+                                {
+                                  "name": "SOAP.py", 
+                                  "size": 154
+                                }, 
+                                {
+                                  "name": "__init__.py", 
+                                  "size": 21
+                                }
+                              ]
+                            }
+                          ]
+                        }, 
+                        {
+                          "name": "__init__.py", 
+                          "size": 44
+                        }, 
+                        {
+                          "name": "profile.py", 
+                          "size": 1033
+                        }, 
+                        {
+                          "name": "sip", 
+                          "children": [
+                            {
+                              "name": "call.py", 
+                              "size": 303
+                            }, 
+                            {
+                              "name": "transaction.py", 
+                              "size": 426
+                            }, 
+                            {
+                              "name": "message.py", 
+                              "size": 452
+                            }, 
+                            {
+                              "name": "constants.py", 
+                              "size": 122
+                            }, 
+                            {
+                              "name": "transport.py", 
+                              "size": 142
+                            }, 
+                            {
+                              "name": "core.py", 
+                              "size": 443
+                            }, 
+                            {
+                              "name": "call_manager.py", 
+                              "size": 115
+                            }, 
+                            {
+                              "name": "__init__.py", 
+                              "size": 21
+                            }, 
+                            {
+                              "name": "registration.py", 
+                              "size": 122
+                            }, 
+                            {
+                              "name": "extensions", 
+                              "children": [
+                                {
+                                  "name": "ms_mepid.py", 
+                                  "size": 48
+                                }, 
+                                {
+                                  "name": "ms_proxy_replace.py", 
+                                  "size": 30
+                                }, 
+                                {
+                                  "name": "base.py", 
+                                  "size": 39
+                                }, 
+                                {
+                                  "name": "__init__.py", 
+                                  "size": 34
+                                }, 
+                                {
+                                  "name": "ms_keep_alive.py", 
+                                  "size": 32
+                                }, 
+                                {
+                                  "name": "outbound.py", 
+                                  "size": 33
+                                }, 
+                                {
+                                  "name": "ms_epid.py", 
+                                  "size": 33
+                                }, 
+                                {
+                                  "name": "ms_conversation_id.py", 
+                                  "size": 34
+                                }
+                              ]
+                            }, 
+                            {
+                              "name": "dialog.py", 
+                              "size": 555
+                            }, 
+                            {
+                              "name": "turn.py", 
+                              "size": 420
+                            }, 
+                            {
+                              "name": "sdp.py", 
+                              "size": 258
+                            }, 
+                            {
+                              "name": "ice.py", 
+                              "size": 184
+                            }
+                          ]
+                        }, 
+                        {
+                          "name": "msnp2p", 
+                          "children": [
+                            {
+                              "name": "session.py", 
+                              "size": 431
+                            }, 
+                            {
+                              "name": "test.py", 
+                              "size": 142
+                            }, 
+                            {
+                              "name": "msnobject.py", 
+                              "size": 69
+                            }, 
+                            {
+                              "name": "constants.py", 
+                              "size": 72
+                            }, 
+                            {
+                              "name": "errors.py", 
+                              "size": 54
+                            }, 
+                            {
+                              "name": "filetransfer.py", 
+                              "size": 106
+                            }, 
+                            {
+                              "name": "__init__.py", 
+                              "size": 28
+                            }, 
+                            {
+                              "name": "webcam.py", 
+                              "size": 298
+                            }, 
+                            {
+                              "name": "SLP.py", 
+                              "size": 452
+                            }, 
+                            {
+                              "name": "session_manager.py", 
+                              "size": 178
+                            }, 
+                            {
+                              "name": "transport", 
+                              "children": [
+                                {
+                                  "name": "switchboard.py", 
+                                  "size": 170
+                                }, 
+                                {
+                                  "name": "direct.py", 
+                                  "size": 359
+                                }, 
+                                {
+                                  "name": "base.py", 
+                                  "size": 249
+                                }, 
+                                {
+                                  "name": "__init__.py", 
+                                  "size": 22
+                                }, 
+                                {
+                                  "name": "notification.py", 
+                                  "size": 81
+                                }, 
+                                {
+                                  "name": "TLP.py", 
+                                  "size": 148
+                                }, 
+                                {
+                                  "name": "TLPv1.py", 
+                                  "size": 280
+                                }, 
+                                {
+                                  "name": "transport_manager.py", 
+                                  "size": 246
+                                }, 
+                                {
+                                  "name": "TLPv2.py", 
+                                  "size": 379
+                                }
+                              ]
+                            }
+                          ]
+                        }, 
+                        {
+                          "name": "media", 
+                          "children": [
+                            {
+                              "name": "call.py", 
+                              "size": 96
+                            }, 
+                            {
+                              "name": "session.py", 
+                              "size": 227
+                            }, 
+                            {
+                              "name": "message.py", 
+                              "size": 146
+                            }, 
+                            {
+                              "name": "constants.py", 
+                              "size": 60
+                            }, 
+                            {
+                              "name": "rtc.py", 
+                              "size": 149
+                            }, 
+                            {
+                              "name": "codec.py", 
+                              "size": 42
+                            }, 
+                            {
+                              "name": "__init__.py", 
+                              "size": 29
+                            }, 
+                            {
+                              "name": "conference.py", 
+                              "size": 352
+                            }, 
+                            {
+                              "name": "stream.py", 
+                              "size": 339
+                            }, 
+                            {
+                              "name": "relay.py", 
+                              "size": 32
+                            }, 
+                            {
+                              "name": "candidate.py", 
+                              "size": 74
+                            }
+                          ]
+                        }, 
+                        {
+                          "name": "client.py", 
+                          "size": 625
+                        }, 
+                        {
+                          "name": "event", 
+                          "children": [
+                            {
+                              "name": "call.py", 
+                              "size": 75
+                            }, 
+                            {
+                              "name": "contact.py", 
+                              "size": 96
+                            }, 
+                            {
+                              "name": "mailbox.py", 
+                              "size": 43
+                            }, 
+                            {
+                              "name": "conversation.py", 
+                              "size": 136
+                            }, 
+                            {
+                              "name": "address_book.py", 
+                              "size": 63
+                            }, 
+                            {
+                              "name": "session.py", 
+                              "size": 58
+                            }, 
+                            {
+                              "name": "content_roaming.py", 
+                              "size": 37
+                            }, 
+                            {
+                              "name": "__init__.py", 
+                              "size": 83
+                            }, 
+                            {
+                              "name": "offline_messages.py", 
+                              "size": 50
+                            }, 
+                            {
+                              "name": "webcam.py", 
+                              "size": 50
+                            }, 
+                            {
+                              "name": "profile.py", 
+                              "size": 69
+                            }, 
+                            {
+                              "name": "client.py", 
+                              "size": 93
+                            }, 
+                            {
+                              "name": "media.py", 
+                              "size": 89
+                            }, 
+                            {
+                              "name": "invite.py", 
+                              "size": 58
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }, 
+                {
+                  "name": "PapyConference.py", 
+                  "size": 375
+                }, 
+                {
+                  "name": "PapyConvert.py", 
+                  "size": 87
+                }
+              ]
+            }, 
+            {
+              "name": "base", 
+              "children": [
+                {
+                  "name": "Call.py", 
+                  "size": 37
+                }, 
+                {
+                  "name": "Session.py", 
+                  "size": 356
+                }, 
+                {
+                  "name": "Message.py", 
+                  "size": 169
+                }, 
+                {
+                  "name": "Contact.py", 
+                  "size": 74
+                }, 
+                {
+                  "name": "Logger.py", 
+                  "size": 1333
+                }, 
+                {
+                  "name": "Transfer.py", 
+                  "size": 78
+                }, 
+                {
+                  "name": "ContactManager.py", 
+                  "size": 136
+                }, 
+                {
+                  "name": "__init__.py", 
+                  "size": 36
+                }, 
+                {
+                  "name": "Proxy.py", 
+                  "size": 40
+                }, 
+                {
+                  "name": "Worker.py", 
+                  "size": 428
+                }, 
+                {
+                  "name": "Group.py", 
+                  "size": 39
+                }, 
+                {
+                  "name": "Event.py", 
+                  "size": 48
+                }, 
+                {
+                  "name": "Action.py", 
+                  "size": 39
+                }, 
+                {
+                  "name": "status.py", 
+                  "size": 29
+                }, 
+                {
+                  "name": "Account.py", 
+                  "size": 29
+                }
+              ]
+            }, 
+            {
+              "name": "common", 
+              "children": [
+                {
+                  "name": "Config.py", 
+                  "size": 76
+                }, 
+                {
+                  "name": "Sounds.py", 
+                  "size": 104
+                }, 
+                {
+                  "name": "externalapi", 
+                  "children": [
+                    {
+                      "name": "ExternalApiDBus.py", 
+                      "size": 133
+                    }, 
+                    {
+                      "name": "__init__.py", 
+                      "size": 24
+                    }, 
+                    {
+                      "name": "ExternalApiDummy.py", 
+                      "size": 32
+                    }
+                  ]
+                }, 
+                {
+                  "name": "RingBuffer.py", 
+                  "size": 51
+                }, 
+                {
+                  "name": "MessageFormatter.py", 
+                  "size": 160
+                }, 
+                {
+                  "name": "XmlParser.py", 
+                  "size": 177
+                }, 
+                {
+                  "name": "Signals.py", 
+                  "size": 67
+                }, 
+                {
+                  "name": "notification.py", 
+                  "size": 242
+                }, 
+                {
+                  "name": "Github.py", 
+                  "size": 55
+                }, 
+                {
+                  "name": "PriorityList.py", 
+                  "size": 68
+                }, 
+                {
+                  "name": "MetaData.py", 
+                  "size": 41
+                }, 
+                {
+                  "name": "sound_gst.py", 
+                  "size": 64
+                }, 
+                {
+                  "name": "locations.py", 
+                  "size": 79
+                }, 
+                {
+                  "name": "Collections.py", 
+                  "size": 331
+                }, 
+                {
+                  "name": "html.py", 
+                  "size": 318
+                }, 
+                {
+                  "name": "pluginmanager.py", 
+                  "size": 272
+                }, 
+                {
+                  "name": "utils.py", 
+                  "size": 108
+                }, 
+                {
+                  "name": "OrderedDict.py", 
+                  "size": 127
+                }, 
+                {
+                  "name": "ConfigDir.py", 
+                  "size": 135
+                }, 
+                {
+                  "name": "__init__.py", 
+                  "size": 40
+                }, 
+                {
+                  "name": "BaseConfig.py", 
+                  "size": 71
+                }, 
+                {
+                  "name": "networkmanager", 
+                  "children": [
+                    {
+                      "name": "NetworkManagerHelperDummy.py", 
+                      "size": 36
+                    }, 
+                    {
+                      "name": "NetworkManagerHelperGio.py", 
+                      "size": 57
+                    }, 
+                    {
+                      "name": "NetworkManagerHelperDBus.py", 
+                      "size": 310
+                    }, 
+                    {
+                      "name": "__init__.py", 
+                      "size": 38
+                    }, 
+                    {
+                      "name": "NetworkManagerHelperWin32.py", 
+                      "size": 195
+                    }
+                  ]
+                }, 
+                {
+                  "name": "Signal.py", 
+                  "size": 91
+                }
+              ]
+            }, 
+            {
+              "name": "synch", 
+              "children": [
+                {
+                  "name": "synchronizers", 
+                  "children": [
+                    {
+                      "name": "nonesynch.py", 
+                      "size": 29
+                    }, 
+                    {
+                      "name": "emesenesynch.py", 
+                      "size": 303
+                    }, 
+                    {
+                      "name": "__init__.py", 
+                      "size": 0
+                    }, 
+                    {
+                      "name": "synch.py", 
+                      "size": 68
+                    }
+                  ]
+                }, 
+                {
+                  "name": "synchronizer.py", 
+                  "size": 36
+                }, 
+                {
+                  "name": "__init__.py", 
+                  "size": 0
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+);</script></body></html>
