@@ -32,8 +32,8 @@ where templatename can be:
 example
 -------
 
-see `emesene project example <http://marianoguerra.github.com/emesene.html>`_
-or `emesene project partition example <http://marianoguerra.github.com/emesene-partition.html>`_
+see `emesene project example <http://marianoguerra.github.com/liofco/emesene.html>`_
+or `emesene project partition example <http://marianoguerra.github.com/liofco/emesene-partition.html>`_
 
 
 FAQ
