@@ -1,0 +1,52 @@
+liofco - nice visualization for your project
+============================================
+
+what
+----
+
+a program that generates graphics from your project structure using d3
+
+why
+---
+
+I like to view my code in different ways
+
+who
+---
+
+marianoguerra
+
+how
+---
+
+for now::
+
+        ./liofco.py path/to/your/code > map.html
+
+example
+-------
+
+see `emesene project example <http://marianoguerra.github.com/emesene.html>`_
+
+FAQ
+---
+
+the script is pretty basic
+..........................
+
+yep
+
+also, that's not a question
+
+pull requests accepted
+
+what I would like *you* to do
+-----------------------------
+
+* argparse to set template to use, languages to accepts, patterns to ignore etc
+* more visualization options
+
+license
+-------
+
+MIT + optional beer for the creator
