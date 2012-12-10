@@ -55,12 +55,14 @@ def walk(path="."):
     return result
 
 def main():
+    path = sys.argv[2]
     current_path = os.getcwd()
-    os.chdir(sys.argv[1])
+    template = os.path.join(current_path, sys.argv[1])
+    os.chdir(path)
     result = walk(".")
     d3data = to_d3_format(result, "root")
 
-    print(open(os.path.join(current_path, "treezoom.html")).read())
+    print(open(os.path.join(current_path, template)).read())
     print("showJson(", end="")
     print(json.dumps(d3data, indent=2))
     print(");</script></body></html>")
